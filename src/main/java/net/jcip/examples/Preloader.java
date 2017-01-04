@@ -11,19 +11,21 @@ import java.util.concurrent.*;
  */
 
 public class Preloader {
+
     ProductInfo loadProductInfo() throws DataLoadException {
+        // долгая задача, которая начётся заранее
         return null;
     }
 
     private final FutureTask<ProductInfo> future =
-        new FutureTask<ProductInfo>(new Callable<ProductInfo>() {
-            public ProductInfo call() throws DataLoadException {
-                return loadProductInfo();
-            }
-        });
+            new FutureTask<ProductInfo>(new Callable<ProductInfo>() {
+                public ProductInfo call() throws DataLoadException {
+                    return loadProductInfo();
+                }
+            });
     private final Thread thread = new Thread(future);
 
-    public void start() { thread.start(); }
+    public void start() { thread.start(); } // запустить долгое вычисление
 
     public ProductInfo get()
             throws DataLoadException, InterruptedException {

@@ -19,4 +19,16 @@ public class ParkingOnHighWay implements HighWay, ParkingLot{
     public int getLength() {
         return 4;
     }
+
+    public static void main(String[] args) {
+        String boss = "boss";
+        char[] array = boss.toCharArray();
+
+        for(char c : array)
+        {
+            if (c== 'o')
+                c = 'a';
+        }
+        System.out.println(new String(array));
+    }
 }

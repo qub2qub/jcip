@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.vehicleTracker;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -14,19 +14,19 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class PublishingVehicleTracker {
-    private final Map<String, SafePoint> locations;
-    private final Map<String, SafePoint> unmodifiableMap;
+    private final Map<String, SafeMutablePoint> locations;
+    private final Map<String, SafeMutablePoint> unmodifiableMap;
 
-    public PublishingVehicleTracker(Map<String, SafePoint> locations) {
-        this.locations = new ConcurrentHashMap<String, SafePoint>(locations);
+    public PublishingVehicleTracker(Map<String, SafeMutablePoint> locations) {
+        this.locations = new ConcurrentHashMap<String, SafeMutablePoint>(locations);
         this.unmodifiableMap = Collections.unmodifiableMap(this.locations);
     }
 
-    public Map<String, SafePoint> getLocations() {
+    public Map<String, SafeMutablePoint> getLocations() {
         return unmodifiableMap;
     }
 
-    public SafePoint getLocation(String id) {
+    public SafeMutablePoint getLocation(String id) {
         return locations.get(id);
     }
 
