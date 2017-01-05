@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.webserver;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,6 +18,7 @@ public class LifecycleWebServer {
 
     public void start() throws IOException {
         ServerSocket socket = new ServerSocket(80);
+
         while (!exec.isShutdown()) {
             try {
                 final Socket conn = socket.accept();
@@ -31,6 +32,7 @@ public class LifecycleWebServer {
                     log("task submission rejected", e);
             }
         }
+
     }
 
     public void stop() {

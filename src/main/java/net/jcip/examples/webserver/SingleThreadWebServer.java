@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.webserver;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.memoization;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -28,17 +28,21 @@ public class Memoizer1 <A, V> implements Computable<A, V> {
         }
         return result;
     }
+
+//    interface Computable <A, V> {
+//        V compute(A arg) throws InterruptedException;
+//    }
+
+//    class ExpensiveFunction
+//            implements Computable<String, BigInteger> {
+//        public BigInteger compute(String arg) {
+//            // after deep thought...
+//            return new BigInteger(arg);
+//        }
+//    }
 }
 
 
-interface Computable <A, V> {
-    V compute(A arg) throws InterruptedException;
-}
 
-class ExpensiveFunction
-        implements Computable<String, BigInteger> {
-    public BigInteger compute(String arg) {
-        // after deep thought...
-        return new BigInteger(arg);
-    }
-}
+
+
