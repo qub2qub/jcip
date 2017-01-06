@@ -1,5 +1,7 @@
 package by.den.concurrent.examples;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -19,24 +21,25 @@ public class RaceLatch {
     private static final CountDownLatch START = new CountDownLatch(8);
     //Условная длина гоночной трассы
     private static final int trackLength = 500000;
+    private static DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
     public static void main(String[] args) throws InterruptedException {
         for (int i = 1; i <= 5; i++) {
             new Thread(new Car(i, (int) (Math.random() * 100 + 50))).start();
-            Thread.sleep(1000);
+            Thread.sleep( (int) (Math.random() * 5000));
         }
 
         while (START.getCount() > 3) //Проверяем, собрались ли все автомобили
             Thread.sleep(100);              //у стартовой прямой. Если нет, ждем 100ms
 
         Thread.sleep(1000);
-        System.out.println("На старт!");
+        System.out.println(LocalTime.now().format(time)+ " = На старт!");
         START.countDown();//Команда дана, уменьшаем счетчик на 1
         Thread.sleep(1000);
-        System.out.println("Внимание!");
+        System.out.println(LocalTime.now().format(time)+ " = Внимание!");
         START.countDown();//Команда дана, уменьшаем счетчик на 1
         Thread.sleep(1000);
-        System.out.println("Марш!");
+        System.out.println(LocalTime.now().format(time)+ " = Марш!");
         START.countDown();//Команда дана, уменьшаем счетчик на 1
         //счетчик становится равным нулю, и все ожидающие потоки
         //одновременно разблокируются
@@ -54,7 +57,8 @@ public class RaceLatch {
         @Override
         public void run() {
             try {
-                System.out.printf("Автомобиль №%d подъехал к стартовой прямой.\n", carNumber);
+                System.out.printf("%s = Автомобиль №%d подъехал к стартовой прямой.\n",
+                        LocalTime.now().format(time), carNumber);
                 //Автомобиль подъехал к стартовой прямой - условие выполнено
                 //уменьшаем счетчик на 1
                 START.countDown();
@@ -62,8 +66,9 @@ public class RaceLatch {
                 //счетчик CountDownLatch не станет равен 0
                 START.await();
                 Thread.sleep(trackLength / carSpeed);//ждем пока проедет трассу
-                System.out.printf("Автомобиль №%d финишировал!\n", carNumber);
+                System.out.printf("%s = Автомобиль №%d финишировал!\n", LocalTime.now().format(time), carNumber);
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

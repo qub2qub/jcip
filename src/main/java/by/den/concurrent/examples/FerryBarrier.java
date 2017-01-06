@@ -16,18 +16,24 @@ public class FerryBarrier {
     public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < 9; i++) {
             new Thread(new Car(i)).start();
-            Thread.sleep(400);
+            Thread.sleep( (int) (Math.random() * 5000));
         }
     }
 
     //Таск, который будет выполняться при достижении сторонами барьера
     public static class FerryBoat implements Runnable {
+        int tripCount = 0;
         @Override
         public void run() {
             try {
-                Thread.sleep(500);
-                System.out.println("Паром переправил автомобили!");
+                tripCount++;
+                System.out.println("(*) --> (*) Паром поехал! ["+tripCount+"]");
+                Thread.sleep(600);
+                System.out.println("(*) !--! (*) Паром переправил автомобили!");
+                Thread.sleep(700);
+                System.out.println("(*) --> (*) Паром вернулся!\n----------------------------");
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -43,12 +49,16 @@ public class FerryBarrier {
         @Override
         public void run() {
             try {
-                System.out.printf("Автомобиль №%d подъехал к паромной переправе.\n", carNumber);
+                System.out.printf(" --> (*) Автомобиль №%d подъехал к паромной переправе. Стало (%d) из Нужных [%d].\n",
+                        carNumber, BARRIER.getNumberWaiting()+1, BARRIER.getParties());
                 //Для указания потоку о том что он достиг барьера, нужно вызвать метод await()
                 //После этого данный поток блокируется, и ждет пока остальные стороны достигнут барьера
                 BARRIER.await();
-                System.out.printf("Автомобиль №%d продолжил движение.\n", carNumber);
+                // вопрос: как сделать чтобы авто уехал не дождавшись переправы?
+                // ответ: так нельзя, т.к. это нарушит барьер и условия для остальных ожидающих потоков.
+                System.out.printf(" (*) --> Автомобиль №%d продолжил движение.\n", carNumber);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

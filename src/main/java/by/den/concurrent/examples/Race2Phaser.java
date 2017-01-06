@@ -9,7 +9,7 @@ public class Race2Phaser {
     public static void main(String[] args) throws InterruptedException {
         for (int i = 1; i <= 5; i++) {
             new Thread(new Car(i, (int) (Math.random() * 100 + 50))).start();
-            Thread.sleep(100);
+            Thread.sleep( (int) (Math.random() * 5000));
         }
 
         while (START.getRegisteredParties() > 3) //Проверяем, собрались ли все автомобили
@@ -44,6 +44,7 @@ public class Race2Phaser {
                 Thread.sleep(trackLength / carSpeed);
                 System.out.printf("Автомобиль №%d финишировал!\n", carNumber);
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -10,6 +10,7 @@ import java.util.*;
  * @author Brian Goetz and Tim Peierls
  */
 public abstract class SingleThreadRenderer {
+
     void renderPage(CharSequence source) {
         renderText(source);
         List<ImageData> imageData = new ArrayList<ImageData>();
