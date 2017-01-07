@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.pageLoading;
 
 import java.util.concurrent.*;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
@@ -16,11 +16,13 @@ public class RenderWithTimeBudget {
     private static final ExecutorService exec = Executors.newCachedThreadPool();
 
     Page renderPageWithAd() throws InterruptedException {
+
         long endNanos = System.nanoTime() + TIME_BUDGET;
         Future<Ad> f = exec.submit(new FetchAdTask());
         // Render the page while waiting for the ad
         Page page = renderPageBody();
         Ad ad;
+
         try {
             // Only wait for the remaining time budget
             long timeLeft = endNanos - System.nanoTime();

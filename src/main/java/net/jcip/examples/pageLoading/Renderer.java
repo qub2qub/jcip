@@ -1,11 +1,11 @@
-package net.jcip.examples;
+package net.jcip.examples.pageLoading;
 
 import java.util.*;
 import java.util.concurrent.*;
 import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
- * Renderer
+ * CompletionService Renderer
  * <p/>
  * Using CompletionService to render page elements as they become available
  *
@@ -20,14 +20,15 @@ public abstract class Renderer {
 
     void renderPage(CharSequence source) {
         final List<ImageInfo> info = scanForImageInfo(source);
-        CompletionService<ImageData> completionService =
-                new ExecutorCompletionService<ImageData>(executor);
-        for (final ImageInfo imageInfo : info)
+        CompletionService<ImageData> completionService =  new ExecutorCompletionService<ImageData>(executor);
+        for (final ImageInfo imageInfo : info) {
+            // lambda view will be: completionService.submit(() -> imageInfo.downloadImage());
             completionService.submit(new Callable<ImageData>() {
                 public ImageData call() {
                     return imageInfo.downloadImage();
                 }
             });
+        } // for
 
         renderText(source);
 
