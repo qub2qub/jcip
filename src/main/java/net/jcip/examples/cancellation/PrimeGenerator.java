@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.cancellation;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.math.BigInteger;
@@ -18,8 +18,8 @@ import net.jcip.annotations.*;
 public class PrimeGenerator implements Runnable {
     private static ExecutorService exec = Executors.newCachedThreadPool();
 
-    @GuardedBy("this") private final List<BigInteger> primes
-            = new ArrayList<BigInteger>();
+    @GuardedBy("this") private final List<BigInteger> primes = new ArrayList<BigInteger>();
+
     private volatile boolean cancelled;
 
     public void run() {
@@ -49,5 +49,15 @@ public class PrimeGenerator implements Runnable {
             generator.cancel();
         }
         return generator.get();
+    }
+
+    public static void main(String[] args) {
+        try {
+            List<BigInteger> primes = aSecondOfPrimes();
+             System.out.printf("primes = %s\n", primes);
+            exec.shutdownNow(); // мой способ остановить потоки из ExecutorService
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

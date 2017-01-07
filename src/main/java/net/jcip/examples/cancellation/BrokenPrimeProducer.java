@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.cancellation;
 
 import java.math.BigInteger;
 import java.util.concurrent.*;
