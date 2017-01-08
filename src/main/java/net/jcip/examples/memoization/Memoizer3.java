@@ -31,6 +31,9 @@ public class Memoizer3 <A, V> implements Computable<A, V> {
             FutureTask<V> ft = new FutureTask<V>(eval);
             f = ft;
             cache.put(arg, ft);
+            // второй также положил в мап, и затёр прежнюю фьючу
+            // и все будут жать пока второй закончит вычисления.
+            //
             ft.run(); // call to c.compute happens here
         }
         try {

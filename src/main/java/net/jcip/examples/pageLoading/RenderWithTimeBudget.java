@@ -31,6 +31,7 @@ public class RenderWithTimeBudget {
             ad = DEFAULT_AD;
         } catch (TimeoutException e) {
             ad = DEFAULT_AD;
+            // надо явно её остановить, т.к. она уже не нужна
             f.cancel(true);
         }
         page.setAd(ad);

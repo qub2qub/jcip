@@ -21,7 +21,7 @@ class BrokenPrimeProducer extends Thread {
     public void run() {
         try {
             BigInteger p = BigInteger.ONE;
-            while (!cancelled)
+            while (!cancelled) // не сработает, т.к. будет заблокрован в queue
                 queue.put(p = p.nextProbablePrime());
         } catch (InterruptedException consumed) {
         }

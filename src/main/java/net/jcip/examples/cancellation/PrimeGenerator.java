@@ -41,6 +41,7 @@ public class PrimeGenerator implements Runnable {
     }
 
     static List<BigInteger> aSecondOfPrimes() throws InterruptedException {
+
         PrimeGenerator generator = new PrimeGenerator();
         exec.execute(generator);
         try {
@@ -54,7 +55,7 @@ public class PrimeGenerator implements Runnable {
     public static void main(String[] args) {
         try {
             List<BigInteger> primes = aSecondOfPrimes();
-             System.out.printf("primes = %s\n", primes);
+            System.out.printf("primes = %s\n", primes);
             exec.shutdownNow(); // мой способ остановить потоки из ExecutorService
         } catch (InterruptedException e) {
             e.printStackTrace();

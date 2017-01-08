@@ -75,7 +75,7 @@ class QuoteTask implements Callable<TravelQuote> {
     }
 
     public TravelQuote call() throws Exception {
-        // требовать; запрашивать квоты у компании ( Коммерческое предложение)
+        // требовать; запрашивать квоты у компании (Коммерческое предложение)
         return company.solicitQuote(travelInfo);
     }
 }
