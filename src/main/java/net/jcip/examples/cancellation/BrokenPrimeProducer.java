@@ -24,6 +24,8 @@ class BrokenPrimeProducer extends Thread {
             while (!cancelled) // не сработает, т.к. будет заблокрован в queue
                 queue.put(p = p.nextProbablePrime());
         } catch (InterruptedException consumed) {
+            // но при exc код перейдёт сюда и прога закончится.
+            // но, например, когда очередь будет забита -- екс не будет, и сюда не зайдет. очередь просто заблокируется.
         }
     }
 

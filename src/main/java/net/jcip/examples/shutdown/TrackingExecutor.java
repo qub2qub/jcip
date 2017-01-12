@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.shutdown;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -11,7 +11,9 @@ import java.util.concurrent.*;
  * @author Brian Goetz and Tim Peierls
  */
 public class TrackingExecutor extends AbstractExecutorService {
+
     private final ExecutorService exec;
+
     private final Set<Runnable> tasksCancelledAtShutdown =
             Collections.synchronizedSet(new HashSet<Runnable>());
 
@@ -41,8 +43,9 @@ public class TrackingExecutor extends AbstractExecutorService {
     }
 
     public List<Runnable> getCancelledTasks() {
-        if (!exec.isTerminated())
+        if (!exec.isTerminated()) {
             throw new IllegalStateException(/*...*/);
+        }
         return new ArrayList<Runnable>(tasksCancelledAtShutdown);
     }
 
@@ -52,8 +55,7 @@ public class TrackingExecutor extends AbstractExecutorService {
                 try {
                     runnable.run();
                 } finally {
-                    if (isShutdown()
-                            && Thread.currentThread().isInterrupted())
+                    if (isShutdown() && Thread.currentThread().isInterrupted())
                         tasksCancelledAtShutdown.add(runnable);
                 }
             }

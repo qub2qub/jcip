@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.logging;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -27,6 +27,9 @@ public class LogWriter {
 
     public void log(String msg) throws InterruptedException {
         queue.put(msg);
+        // 2й способ завершить, но ненадёжный
+//        if (!shutdownRequested) queue.put(msg);
+//        else throw new IllegalStateException("logger is shut down");
     }
 
     private class LoggerThread extends Thread {
@@ -41,6 +44,9 @@ public class LogWriter {
                 while (true)
                     writer.println(queue.take());
             } catch (InterruptedException ignored) {
+                // 1й способ завершить, но ненадёжный
+                // можно было тут выйти, когда пришло бы InterruptedException из queue
+                // но это ненадёжный механизм.
             } finally {
                 writer.close();
             }

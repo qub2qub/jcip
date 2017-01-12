@@ -56,7 +56,10 @@ public class PrimeGenerator implements Runnable {
         try {
             List<BigInteger> primes = aSecondOfPrimes();
             System.out.printf("primes = %s\n", primes);
-            exec.shutdownNow(); // мой способ остановить потоки из ExecutorService
+            exec.shutdown(); // мой способ остановить потоки из ExecutorService
+            //shutdownNow() пробует остановить и запущенные задачи, если они есть.
+            // поэтому чтобы дождаться выполнения запущенных и уже запланированных задач --
+            // надо вызываться просто shutdown()
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

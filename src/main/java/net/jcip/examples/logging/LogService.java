@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.logging;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -39,8 +39,11 @@ public class LogService {
 
     public void log(String msg) throws InterruptedException {
         synchronized (this) {
-            if (isShutdown)
+            if (isShutdown) {
+                // и больше нельзя будет добавить в очередь на вывод в лог
                 throw new IllegalStateException(/*...*/);
+            }
+            // если не завершается -- то можно добавлять в лог.
             ++reservations;
         }
         queue.put(msg);
@@ -53,13 +56,18 @@ public class LogService {
                     try {
                         synchronized (LogService.this) {
                             if (isShutdown && reservations == 0)
+                                // когда очистим все reservations -- можно будет закрыться/остановиться
                                 break;
                         }
+                        // ожидаем если есть блок
                         String msg = queue.take();
                         synchronized (LogService.this) {
+                            // взяли строку в лог, уменьшаем каунтер
                             --reservations;
                         }
+                        // пишем сообщение в лог
                         writer.println(msg);
+                        // заново проходим весь цикл while
                     } catch (InterruptedException e) { /* retry */
                     }
                 }

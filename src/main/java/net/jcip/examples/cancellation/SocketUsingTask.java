@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.cancellation;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -33,7 +33,13 @@ public abstract class SocketUsingTask <T> implements CancellableTask<T> {
         return new FutureTask<T>(this) {
             public boolean cancel(boolean mayInterruptIfRunning) {
                 try {
+                    // что за фигня?
+                    // так можно взять ссылку на класс, в котором тебя создали.
+                    // (для внутренних классов)
                     SocketUsingTask.this.cancel();
+                    // Потому что просто this - будет ссылатьсся на анонимный класс  new FutureTask
+                    // А чтобы получить this от SocketUsingTask (т.е. ссылку на интерфейс) --
+                    // надо указать имя класса точка зис.
                 } finally {
                     return super.cancel(mayInterruptIfRunning);
                 }
@@ -42,16 +48,14 @@ public abstract class SocketUsingTask <T> implements CancellableTask<T> {
     }
 }
 
-
 interface CancellableTask <T> extends Callable<T> {
-    void cancel();
-
-    RunnableFuture<T> newTask();
+    void cancel(); // adds new method
+    RunnableFuture<T> newTask(); // factory method
 }
-
 
 @ThreadSafe
 class CancellingExecutor extends ThreadPoolExecutor {
+    //<editor-fold desc="constructors">
     public CancellingExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
     }
@@ -67,8 +71,13 @@ class CancellingExecutor extends ThreadPoolExecutor {
     public CancellingExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
     }
+    //</editor-fold>
 
+    /**
+     * overrides newTaskFor to let a CancellableTask create its own Future
+     */
     protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
+        // Спец.штука -- если придёт наш таск -- то он создат и нашу кастомную фьючу.
         if (callable instanceof CancellableTask)
             return ((CancellableTask<T>) callable).newTask();
         else

@@ -1,26 +1,32 @@
-package net.jcip.examples;
+package net.jcip.examples.cancellation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
 /**
- * ReaderThread
+ * ReaderThread_NonstandardCancellation
  * <p/>
  * Encapsulating nonstandard cancellation in a Thread by overriding interrupt
  *
  * @author Brian Goetz and Tim Peierls
  */
-public class ReaderThread extends Thread {
+public class ReaderThread_NonstandardCancellation extends Thread {
     private static final int BUFSZ = 512;
     private final Socket socket;
     private final InputStream in;
 
-    public ReaderThread(Socket socket) throws IOException {
+    public ReaderThread_NonstandardCancellation(Socket socket) throws IOException {
         this.socket = socket;
         this.in = socket.getInputStream();
     }
 
+    /**
+     * To facilitate terminating a user connection or shutting down the server,
+     * ReaderThread overrides interrupt to both deliver a standard interrupt and close the underlying socket;
+     * thus interrupting a ReaderThread makes it stop what it is doing
+     * whether it is blocked in read or in an interruptible blocking method.
+     */
     public void interrupt() {
         try {
             socket.close();
@@ -40,7 +46,8 @@ public class ReaderThread extends Thread {
                 else if (count > 0)
                     processBuffer(buf, count);
             }
-        } catch (IOException e) { /* Allow thread to exit */
+        } catch (IOException e) {
+            /* Allow thread to exit */
         }
     }
 

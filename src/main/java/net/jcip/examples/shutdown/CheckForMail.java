@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.shutdown;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.*;
  * @author Brian Goetz and Tim Peierls
  */
 public class CheckForMail {
-    public boolean checkMail(Set<String> hosts, long timeout, TimeUnit unit)
-            throws InterruptedException {
+    public boolean checkMail(Set<String> hosts, long timeout, TimeUnit unit) throws InterruptedException {
+
         ExecutorService exec = Executors.newCachedThreadPool();
         final AtomicBoolean hasNewMail = new AtomicBoolean(false);
         try {

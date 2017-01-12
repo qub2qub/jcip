@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.shutdown;
 
 import java.io.File;
 import java.io.FileFilter;

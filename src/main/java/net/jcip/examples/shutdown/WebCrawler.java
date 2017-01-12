@@ -1,10 +1,11 @@
-package net.jcip.examples;
+package net.jcip.examples.shutdown;
 
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
 
 import net.jcip.annotations.*;
+import net.jcip.examples.shutdown.TrackingExecutor;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -16,10 +17,13 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * @author Brian Goetz and Tim Peierls
  */
 public abstract class WebCrawler {
+
     private volatile TrackingExecutor exec;
+
     @GuardedBy("this") private final Set<URL> urlsToCrawl = new HashSet<URL>();
 
     private final ConcurrentMap<URL, Boolean> seen = new ConcurrentHashMap<URL, Boolean>();
+
     private static final long TIMEOUT = 500;
     private static final TimeUnit UNIT = MILLISECONDS;
 
@@ -29,15 +33,20 @@ public abstract class WebCrawler {
 
     public synchronized void start() {
         exec = new TrackingExecutor(Executors.newCachedThreadPool());
-        for (URL url : urlsToCrawl) submitCrawlTask(url);
+
+        for (URL url : urlsToCrawl) {
+            submitCrawlTask(url);
+        }
+
         urlsToCrawl.clear();
     }
 
     public synchronized void stop() throws InterruptedException {
         try {
             saveUncrawled(exec.shutdownNow());
-            if (exec.awaitTermination(TIMEOUT, UNIT))
+            if (exec.awaitTermination(TIMEOUT, UNIT)) {
                 saveUncrawled(exec.getCancelledTasks());
+            }
         } finally {
             exec = null;
         }
@@ -46,8 +55,9 @@ public abstract class WebCrawler {
     protected abstract List<URL> processPage(URL url);
 
     private void saveUncrawled(List<Runnable> uncrawled) {
-        for (Runnable task : uncrawled)
+        for (Runnable task : uncrawled) {
             urlsToCrawl.add(((CrawlTask) task).getPage());
+        }
     }
 
     private void submitCrawlTask(URL u) {
@@ -73,9 +83,12 @@ public abstract class WebCrawler {
         }
 
         public void run() {
+            // будет вызван processPage() и вёрнёт все найденные другие урлы из него
             for (URL link : processPage(url)) {
-                if (Thread.currentThread().isInterrupted())
+                if (Thread.currentThread().isInterrupted()) {
                     return;
+                }
+                // создадутся новые таски с для каждого полученного урла
                 submitCrawlTask(link);
             }
         }
