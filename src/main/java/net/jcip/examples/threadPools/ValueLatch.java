@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.threadPools;
 
 import java.util.concurrent.*;
 
@@ -13,6 +13,7 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class ValueLatch <T> {
+
     @GuardedBy("this") private T value = null;
     private final CountDownLatch done = new CountDownLatch(1);
 
@@ -29,6 +30,7 @@ public class ValueLatch <T> {
 
     public T getValue() throws InterruptedException {
         done.await();
+        // чтобы setValue смог закончиться и записать обновлённое занчение из другого потока
         synchronized (this) {
             return value;
         }

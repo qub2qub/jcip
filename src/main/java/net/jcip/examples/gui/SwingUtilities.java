@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.gui;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.*;
@@ -11,8 +11,7 @@ import java.util.concurrent.*;
  * @author Brian Goetz and Tim Peierls
  */
 public class SwingUtilities {
-    private static final ExecutorService exec =
-            Executors.newSingleThreadExecutor(new SwingThreadFactory());
+    private static final ExecutorService exec = Executors.newSingleThreadExecutor(new SwingThreadFactory());
     private static volatile Thread swingThread;
 
     private static class SwingThreadFactory implements ThreadFactory {

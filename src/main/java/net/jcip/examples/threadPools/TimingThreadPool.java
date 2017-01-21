@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.threadPools;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
@@ -14,7 +14,9 @@ import java.util.logging.*;
 public class TimingThreadPool extends ThreadPoolExecutor {
 
     public TimingThreadPool() {
-        super(1, 1, 0L, TimeUnit.SECONDS, null);
+        super(1, 1,
+                0L, TimeUnit.SECONDS,
+                null);
     }
 
     private final ThreadLocal<Long> startTime = new ThreadLocal<Long>();
@@ -34,8 +36,7 @@ public class TimingThreadPool extends ThreadPoolExecutor {
             long taskTime = endTime - startTime.get();
             numTasks.incrementAndGet();
             totalTime.addAndGet(taskTime);
-            log.fine(String.format("Thread %s: end %s, time=%dns",
-                    t, r, taskTime));
+            log.fine(String.format("Thread %s: end %s, time=%dns", t, r, taskTime));
         } finally {
             super.afterExecute(r, t);
         }
@@ -43,8 +44,7 @@ public class TimingThreadPool extends ThreadPoolExecutor {
 
     protected void terminated() {
         try {
-            log.info(String.format("Terminated: avg time=%dns",
-                    totalTime.get() / numTasks.get()));
+            log.info(String.format("Terminated: avg time=%dns", totalTime.get() / numTasks.get()));
         } finally {
             super.terminated();
         }

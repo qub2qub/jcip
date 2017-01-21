@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.threadPools;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -13,30 +13,34 @@ import java.util.concurrent.*;
 public abstract class TransformingSequential {
 
     void processSequentially(List<Element> elements) {
-        for (Element e : elements)
+        for (Element e : elements) {
             process(e);
+        }
     }
 
     void processInParallel(Executor exec, List<Element> elements) {
-        for (final Element e : elements)
+        for (final Element e : elements) {
             exec.execute(new Runnable() {
                 public void run() {
                     process(e);
                 }
             });
+        }
     }
 
     public abstract void process(Element e);
 
 
-    public <T> void sequentialRecursive(List<Node<T>> nodes,
-                                        Collection<T> results) {
+    public <T> void sequentialRecursive(List<Node<T>> nodes, Collection<T> results) {
         for (Node<T> n : nodes) {
             results.add(n.compute());
             sequentialRecursive(n.getChildren(), results);
         }
     }
 
+    /**
+     * Например чтобы пройти по всему дереву.
+     */
     public <T> void parallelRecursive(final Executor exec,
                                       List<Node<T>> nodes,
                                       final Collection<T> results) {
@@ -50,12 +54,12 @@ public abstract class TransformingSequential {
         }
     }
 
-    public <T> Collection<T> getParallelResults(List<Node<T>> nodes)
-            throws InterruptedException {
+    public <T> Collection<T> getParallelResults(List<Node<T>> nodes) throws InterruptedException {
         ExecutorService exec = Executors.newCachedThreadPool();
         Queue<T> resultQueue = new ConcurrentLinkedQueue<T>();
         parallelRecursive(exec, nodes, resultQueue);
         exec.shutdown();
+        // очень долго ждёт шатдауна
         exec.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
         return resultQueue;
     }

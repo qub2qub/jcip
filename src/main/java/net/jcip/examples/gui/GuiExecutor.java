@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.gui;
 
 import java.util.*;
 import java.util.concurrent.*;

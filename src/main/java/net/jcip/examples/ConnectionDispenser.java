@@ -14,8 +14,7 @@ import java.sql.SQLException;
 public class ConnectionDispenser {
     static String DB_URL = "jdbc:mysql://localhost/mydatabase";
 
-    private ThreadLocal<Connection> connectionHolder
-            = new ThreadLocal<Connection>() {
+    private ThreadLocal<Connection> connectionHolder = new ThreadLocal<Connection>() {
                 public Connection initialValue() {
                     try {
                         return DriverManager.getConnection(DB_URL);

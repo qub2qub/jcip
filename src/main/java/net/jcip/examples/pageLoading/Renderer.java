@@ -34,6 +34,7 @@ public abstract class Renderer {
 
         try {
             for (int t = 0, n = info.size(); t < n; t++) {
+                // Ждём когда появится любая завершившаяся задача, и берём её результат
                 Future<ImageData> f = completionService.take();
                 ImageData imageData = f.get();
                 renderImage(imageData);

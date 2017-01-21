@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.threadPools;
 
 import java.util.concurrent.atomic.*;
 
@@ -10,22 +10,29 @@ import java.util.concurrent.atomic.*;
  * @author Brian Goetz and Tim Peierls
  */
 public class PuzzleSolver <P,M> extends ConcurrentPuzzleSolver<P, M> {
+
     PuzzleSolver(Puzzle<P, M> puzzle) {
         super(puzzle);
     }
 
     private final AtomicInteger taskCount = new AtomicInteger(0);
 
-    protected Runnable newTask(P p, M m, PuzzleNode<P, M> n) {
-        return new CountingSolverTask(p, m, n);
+    @Override
+    protected Runnable newTask4Puzzle(P pos, M move, PuzzleNode<P, M> node) {
+        return new CountingSolverTask(pos, move, node);
     }
 
+    /**
+     * Отдельная задача 2
+     */
     class CountingSolverTask extends SolverTask {
+
         CountingSolverTask(P pos, M move, PuzzleNode<P, M> prev) {
             super(pos, move, prev);
             taskCount.incrementAndGet();
         }
 
+        @Override
         public void run() {
             try {
                 super.run();

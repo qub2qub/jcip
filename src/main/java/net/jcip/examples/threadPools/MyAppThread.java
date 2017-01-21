@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.threadPools;
 
 import java.util.concurrent.atomic.*;
 import java.util.logging.*;
@@ -23,11 +23,10 @@ public class MyAppThread extends Thread {
 
     public MyAppThread(Runnable runnable, String name) {
         super(runnable, name + "-" + created.incrementAndGet());
+
         setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread t,
-                                          Throwable e) {
-                log.log(Level.SEVERE,
-                        "UNCAUGHT in thread " + t.getName(), e);
+            public void uncaughtException(Thread t, Throwable e) {
+                log.log(Level.SEVERE, "UNCAUGHT in thread " + t.getName(), e);
             }
         });
     }
