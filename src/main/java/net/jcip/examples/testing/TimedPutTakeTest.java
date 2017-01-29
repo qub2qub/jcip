@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.testing;
 
 import java.util.concurrent.*;
 
@@ -24,9 +24,11 @@ public class TimedPutTakeTest extends PutTakeTest {
                 pool.execute(new PutTakeTest.Producer());
                 pool.execute(new PutTakeTest.Consumer());
             }
-            barrier.await();
-            barrier.await();
+            barrier.await(); // старт замера в таймере
+            barrier.await(); // стоп замера в таймере
+            // делим время на всё кол-во операций
             long nsPerItem = timer.getTime() / (nPairs * (long) nTrials);
+            // получаем время на операцию
             System.out.print("Throughput: " + nsPerItem + " ns/item");
             assertEquals(putSum.get(), takeSum.get());
         } catch (Exception e) {
@@ -35,7 +37,7 @@ public class TimedPutTakeTest extends PutTakeTest {
     }
 
     public static void main(String[] args) throws Exception {
-        int tpt = 100000; // trials per thread
+        int tpt = 100_000; // trials per thread
         for (int cap = 1; cap <= 1000; cap *= 10) {
             System.out.println("Capacity: " + cap);
             for (int pairs = 1; pairs <= 128; pairs *= 2) {

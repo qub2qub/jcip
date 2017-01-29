@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.deadlock;
 
 /**
  * InduceLockOrder
@@ -8,12 +8,11 @@ package net.jcip.examples;
  * @author Brian Goetz and Tim Peierls
  */
 public class InduceLockOrder {
-    private static final Object tieLock = new Object();
+    private final Object tieLock = new Object(); // "tie breaking" lock
 
-    public void transferMoney(final Account fromAcct,
-                              final Account toAcct,
-                              final DollarAmount amount)
+    public void transferMoney(final IAccount fromAcct, final IAccount toAcct, final IDollarAmount amount)
             throws InsufficientFundsException {
+
         class Helper {
             public void transfer() throws InsufficientFundsException {
                 if (fromAcct.getBalance().compareTo(amount) < 0)
@@ -21,9 +20,11 @@ public class InduceLockOrder {
                 else {
                     fromAcct.debit(amount);
                     toAcct.credit(amount);
+                    System.out.print(".");
                 }
             }
         }
+
         int fromHash = System.identityHashCode(fromAcct);
         int toHash = System.identityHashCode(toAcct);
 
@@ -50,19 +51,4 @@ public class InduceLockOrder {
         }
     }
 
-    interface DollarAmount extends Comparable<DollarAmount> {
-    }
-
-    interface Account {
-        void debit(DollarAmount d);
-
-        void credit(DollarAmount d);
-
-        DollarAmount getBalance();
-
-        int getAcctNo();
-    }
-
-    class InsufficientFundsException extends Exception {
-    }
 }

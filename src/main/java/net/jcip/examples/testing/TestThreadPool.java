@@ -1,9 +1,10 @@
-package net.jcip.examples;
+package net.jcip.examples.testing;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
 import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * TestingThreadFactory
@@ -15,6 +16,12 @@ import junit.framework.TestCase;
 public class TestThreadPool extends TestCase {
 
     private final TestingThreadFactory threadFactory = new TestingThreadFactory();
+
+    @Test(expected = RuntimeException.class)
+    public void raz() {
+        System.out.println("dddd");
+        throw new RuntimeException("aaaaa");
+    }
 
     public void testPoolExpansion() throws InterruptedException {
         int MAX_SIZE = 10;
@@ -32,8 +39,9 @@ public class TestThreadPool extends TestCase {
             });
         for (int i = 0;
              i < 20 && threadFactory.numCreated.get() < MAX_SIZE;
-             i++)
+             i++) {
             Thread.sleep(100);
+        }
         assertEquals(threadFactory.numCreated.get(), MAX_SIZE);
         exec.shutdownNow();
     }

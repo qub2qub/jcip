@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.deadlock;
 
 import java.util.*;
 
@@ -6,14 +6,14 @@ import net.jcip.annotations.*;
 import net.jcip.examples.vehicleTracker.ImmutablePoint;
 
 /**
- * CooperatingDeadlock
+ * CooperatingNoDeadlock
  * <p/>
- * Lock-ordering deadlock between cooperating objects
+ * Using open calls to avoiding deadlock between cooperating objects
  *
  * @author Brian Goetz and Tim Peierls
  */
-public class CooperatingDeadlock {
-    // Warning: deadlock-prone!
+class CooperatingNoDeadlock {
+    @ThreadSafe
     class Taxi {
         @GuardedBy("this") private ImmutablePoint location, destination;
         private final Dispatcher dispatcher;
@@ -26,10 +26,15 @@ public class CooperatingDeadlock {
             return location;
         }
 
-        public synchronized void setLocation(ImmutablePoint location) {
-            this.location = location;
-            if (location.equals(destination))
+        public void setLocation(ImmutablePoint location) {
+            boolean reachedDestination;
+            synchronized (this) {
+                this.location = location;
+                reachedDestination = location.equals(destination);
+            }
+            if (reachedDestination) {
                 dispatcher.notifyAvailable(this);
+            }
         }
 
         public synchronized ImmutablePoint getDestination() {
@@ -41,6 +46,7 @@ public class CooperatingDeadlock {
         }
     }
 
+    @ThreadSafe
     class Dispatcher {
         @GuardedBy("this") private final Set<Taxi> taxis;
         @GuardedBy("this") private final Set<Taxi> availableTaxis;
@@ -54,10 +60,20 @@ public class CooperatingDeadlock {
             availableTaxis.add(taxi);
         }
 
-        public synchronized Image getImage() {
+        public Image getImage() {
+            Set<Taxi> copy;
+            // чтобы избежать concurrentModifExc самого сета.
+            synchronized (this) {
+                copy = new HashSet<Taxi>(taxis);
+            }
             Image image = new Image();
-            for (Taxi t : taxis)
+            // сначала сделали копию всех такси, чтобы получить срез
+            // чтобы не надо было вызывать getLocation из синхрониз.блока
+            // но они же сделали только копию ссылки на сет,
+            // поля в каждом такси также могут буть изменены из других потоков.
+            for (Taxi t : copy) {
                 image.drawMarker(t.getLocation());
+            }
             return image;
         }
     }
@@ -66,4 +82,5 @@ public class CooperatingDeadlock {
         public void drawMarker(ImmutablePoint p) {
         }
     }
+
 }

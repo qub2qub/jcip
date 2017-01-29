@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.testing;
 
 import junit.framework.TestCase;
 
@@ -22,8 +22,9 @@ public class TestBoundedBuffer extends TestCase {
 
     void testIsFullAfterPuts() throws InterruptedException {
         SemaphoreBoundedBuffer<Integer> bb = new SemaphoreBoundedBuffer<Integer>(10);
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++) {
             bb.put(i);
+        }
         assertTrue(bb.isFull());
         assertFalse(bb.isEmpty());
     }
@@ -31,6 +32,7 @@ public class TestBoundedBuffer extends TestCase {
 
     void testTakeBlocksWhenEmpty() {
         final SemaphoreBoundedBuffer<Integer> bb = new SemaphoreBoundedBuffer<Integer>(10);
+//        final BoundedBuffer<Integer> bb2 = new BoundedBuffer<Integer>(10);
         Thread taker = new Thread() {
             public void run() {
                 try {
@@ -42,10 +44,11 @@ public class TestBoundedBuffer extends TestCase {
         };
         try {
             taker.start();
-            Thread.sleep(LOCKUP_DETECT_TIMEOUT);
-            taker.interrupt();
-            taker.join(LOCKUP_DETECT_TIMEOUT);
-            assertFalse(taker.isAlive());
+            Thread.sleep(LOCKUP_DETECT_TIMEOUT); // текущий поток заснёт
+            taker.interrupt(); // прервать тестовый поток
+            //The timed join ensures that the test completes even if take gets stuck in some unexpected way.
+            taker.join(LOCKUP_DETECT_TIMEOUT); // присоединиться к тестовому потоку
+            assertFalse(taker.isAlive()); // тестовый поток должен быть прерван
         } catch (Exception unexpected) {
             fail();
         }
@@ -58,10 +61,12 @@ public class TestBoundedBuffer extends TestCase {
     void testLeak() throws InterruptedException {
         SemaphoreBoundedBuffer<Big> bb = new SemaphoreBoundedBuffer<Big>(CAPACITY);
         int heapSize1 = snapshotHeap();
-        for (int i = 0; i < CAPACITY; i++)
+        for (int i = 0; i < CAPACITY; i++) {
             bb.put(new Big());
-        for (int i = 0; i < CAPACITY; i++)
+        }
+        for (int i = 0; i < CAPACITY; i++) {
             bb.take();
+        }
         int heapSize2 = snapshotHeap();
         assertTrue(Math.abs(heapSize1 - heapSize2) < THRESHOLD);
     }

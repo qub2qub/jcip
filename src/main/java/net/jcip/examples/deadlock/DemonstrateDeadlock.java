@@ -1,9 +1,6 @@
-package net.jcip.examples;
+package net.jcip.examples.deadlock;
 
 import java.util.*;
-
-import net.jcip.examples.DynamicOrderDeadlock.Account;
-import net.jcip.examples.DynamicOrderDeadlock.DollarAmount;
 
 /**
  * DemonstrateDeadlock
@@ -21,18 +18,23 @@ public class DemonstrateDeadlock {
         final Random rnd = new Random();
         final Account[] accounts = new Account[NUM_ACCOUNTS];
 
-        for (int i = 0; i < accounts.length; i++)
-            accounts[i] = new Account();
+        for (int i = 0; i < accounts.length; i++) {
+            accounts[i] = new Account(new DollarAmount(i * 9_000_000));
+        }
 
+        InduceLockOrder safe = new InduceLockOrder();
         class TransferThread extends Thread {
             public void run() {
                 for (int i = 0; i < NUM_ITERATIONS; i++) {
                     int fromAcct = rnd.nextInt(NUM_ACCOUNTS);
                     int toAcct = rnd.nextInt(NUM_ACCOUNTS);
-                    DollarAmount amount = new DollarAmount(rnd.nextInt(1000));
+                    DollarAmount amount = new DollarAmount(rnd.nextInt(10));
                     try {
-                        DynamicOrderDeadlock.transferMoney(accounts[fromAcct], accounts[toAcct], amount);
-                    } catch (DynamicOrderDeadlock.InsufficientFundsException ignored) {
+                        // будет дэдлок из-за неудачной перемешки в аргументах:
+//                        DynamicOrderDeadlock.transferMoney(accounts[fromAcct], accounts[toAcct], amount);
+                        // фикс - использовать упорядоченный лок:
+                        safe.transferMoney(accounts[fromAcct], accounts[toAcct], amount);
+                    } catch (InsufficientFundsException ignored) {
                     }
                 }
             }

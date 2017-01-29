@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.performance;
 
 import net.jcip.annotations.*;
 
@@ -36,9 +36,11 @@ public class StripedMap {
     public Object get(Object key) {
         int hash = hash(key);
         synchronized (locks[hash % N_LOCKS]) {
-            for (Node m = buckets[hash]; m != null; m = m.next)
-                if (m.key.equals(key))
+            for (Node m = buckets[hash]; m != null; m = m.next) {
+                if (m.key.equals(key)) {
                     return m.value;
+                }
+            }
         }
         return null;
     }

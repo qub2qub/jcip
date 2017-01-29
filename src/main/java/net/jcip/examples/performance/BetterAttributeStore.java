@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.performance;
 
 import java.util.*;
 import java.util.regex.*;
@@ -6,21 +6,23 @@ import java.util.regex.*;
 import net.jcip.annotations.*;
 
 /**
- * AttributeStore
+ * BetterAttributeStore
  * <p/>
- * Holding a lock longer than necessary
+ * Reducing lock duration
  *
  * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
-public class AttributeStore {
+public class BetterAttributeStore {
     @GuardedBy("this") private final Map<String, String>
             attributes = new HashMap<String, String>();
 
-    public synchronized boolean userLocationMatches(String name,
-                                                    String regexp) {
+    public boolean userLocationMatches(String name, String regexp) {
         String key = "users." + name + ".location";
-        String location = attributes.get(key);
+        String location;
+        synchronized (this) {
+            location = attributes.get(key);
+        }
         if (location == null)
             return false;
         else

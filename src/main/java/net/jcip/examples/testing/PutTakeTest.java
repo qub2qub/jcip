@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.testing;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
@@ -38,8 +38,15 @@ public class PutTakeTest extends TestCase {
                 pool.execute(new Producer());
                 pool.execute(new Consumer());
             }
+            System.out.println("Все ждут");
+            // все потоки проинициализированы и ждут послденего .await()
             barrier.await(); // wait for all threads to be ready
+            System.out.println("Все работают");
+            System.out.println("Все завершаются..");
+            // после того как барьер пройден -- они снова вызывают .await() в конце своих операций
+            // и барьеру нужен ещё 1 .await(), чтобы всех выпустить в конце
             barrier.await(); // wait for all threads to finish
+            System.out.println("Все закончились");
             assertEquals(putSum.get(), takeSum.get());
         } catch (Exception e) {
             throw new RuntimeException(e);

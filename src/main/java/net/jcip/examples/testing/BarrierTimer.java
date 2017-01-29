@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.testing;
 
 /**
  * BarrierTimer
@@ -16,8 +16,9 @@ public class BarrierTimer implements Runnable {
         if (!started) {
             started = true;
             startTime = t;
-        } else
+        } else {
             endTime = t;
+        }
     }
 
     public synchronized void clear() {

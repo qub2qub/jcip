@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.deadlock;
 
 import java.util.*;
 
@@ -6,14 +6,14 @@ import net.jcip.annotations.*;
 import net.jcip.examples.vehicleTracker.ImmutablePoint;
 
 /**
- * CooperatingNoDeadlock
+ * CooperatingDeadlock
  * <p/>
- * Using open calls to avoiding deadlock between cooperating objects
+ * Lock-ordering deadlock between cooperating objects
  *
  * @author Brian Goetz and Tim Peierls
  */
-class CooperatingNoDeadlock {
-    @ThreadSafe
+public class CooperatingDeadlock {
+    // Warning: deadlock-prone!
     class Taxi {
         @GuardedBy("this") private ImmutablePoint location, destination;
         private final Dispatcher dispatcher;
@@ -27,13 +27,11 @@ class CooperatingNoDeadlock {
         }
 
         public synchronized void setLocation(ImmutablePoint location) {
-            boolean reachedDestination;
-            synchronized (this) {
-                this.location = location;
-                reachedDestination = location.equals(destination);
-            }
-            if (reachedDestination)
+            this.location = location;
+            if (location.equals(destination)) {
+                // вызывает другой синхронизированный метод.
                 dispatcher.notifyAvailable(this);
+            }
         }
 
         public synchronized ImmutablePoint getDestination() {
@@ -45,7 +43,6 @@ class CooperatingNoDeadlock {
         }
     }
 
-    @ThreadSafe
     class Dispatcher {
         @GuardedBy("this") private final Set<Taxi> taxis;
         @GuardedBy("this") private final Set<Taxi> availableTaxis;
@@ -59,14 +56,16 @@ class CooperatingNoDeadlock {
             availableTaxis.add(taxi);
         }
 
-        public Image getImage() {
-            Set<Taxi> copy;
-            synchronized (this) {
-                copy = new HashSet<Taxi>(taxis);
-            }
+        /**
+         * Сначала кто-то вызовет taxi -> setLocations -> dipatcher -> notifyAll
+         * а другой вызовет сналала dispatcher -> getImage и потом taxi -> getLocation.
+         * и это будет дэдлок, как с left right
+         */
+        public synchronized Image getImage() {
             Image image = new Image();
-            for (Taxi t : copy)
+            for (Taxi t : taxis) {
                 image.drawMarker(t.getLocation());
+            }
             return image;
         }
     }
@@ -75,5 +74,4 @@ class CooperatingNoDeadlock {
         public void drawMarker(ImmutablePoint p) {
         }
     }
-
 }

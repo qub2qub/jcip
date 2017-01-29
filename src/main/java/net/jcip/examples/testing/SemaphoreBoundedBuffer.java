@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.testing;
 
 import java.util.concurrent.*;
 

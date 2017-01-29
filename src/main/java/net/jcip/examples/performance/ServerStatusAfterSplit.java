@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.performance;
 
 import java.util.*;
 
@@ -13,6 +13,7 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class ServerStatusAfterSplit {
+    // или можно заменить на thread-safe коллекции, тогда вообще не надо доп. синхронизация
     @GuardedBy("users") public final Set<String> users;
     @GuardedBy("queries") public final Set<String> queries;
 

@@ -1,6 +1,7 @@
 package net.jcip.examples;
 
 import net.jcip.annotations.*;
+import net.jcip.examples.testing.BaseBoundedBuffer;
 
 /**
  * GrumpyBoundedBuffer
