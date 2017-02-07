@@ -14,14 +14,19 @@ public class TimeBudget {
     private static ExecutorService exec = Executors.newCachedThreadPool();
 
     public List<TravelQuote> getRankedTravelQuotes(
-            TravelInfo travelInfo, Set<TravelCompany> companies, Comparator<TravelQuote> ranking, long time, TimeUnit unit)
+            TravelInfo travelInfo,
+            Set<TravelCompany> companies,
+            Comparator<TravelQuote> ranking,
+            long time,
+            TimeUnit unit)
             throws InterruptedException {
 
         List<QuoteTask> n1tasks = new ArrayList<QuoteTask>();
 
-        for (TravelCompany company : companies)
+        for (TravelCompany company : companies) {
             // заполняет массив Callable
             n1tasks.add(new QuoteTask(company, travelInfo));
+        }
 
         // invokeAll -- добавляет в том же порядке, как и исходная коллекция
         List<Future<TravelQuote>> n2futures = exec.invokeAll(n1tasks, time, unit);

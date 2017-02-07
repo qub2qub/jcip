@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.customSync;
 
 import net.jcip.annotations.*;
 
@@ -28,7 +28,8 @@ public class ThreadGate {
     // BLOCKS-UNTIL: opened-since(generation on entry)
     public synchronized void await() throws InterruptedException {
         int arrivalGeneration = generation;
-        while (!isOpen && arrivalGeneration == generation)
+        while (!isOpen && arrivalGeneration == generation) {
             wait();
+        }
     }
 }

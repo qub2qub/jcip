@@ -1,4 +1,4 @@
-package net.jcip.examples.deadlock;
+package net.jcip.examples.explicitLocks;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -15,11 +15,9 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 public class DeadlockAvoidance {
     private static Random rnd = new Random();
 
-    public boolean transferMoney(Account fromAcct,
-                                 Account toAcct,
-                                 DollarAmount amount,
-                                 long timeout,
-                                 TimeUnit unit)
+    public boolean transferMoney(Account fromAcct, Account toAcct,
+                                 DollarAmount amount, long timeout, TimeUnit unit)
+
             throws InsufficientFundsException, InterruptedException {
         long fixedDelay = getFixedDelayComponentNanos(timeout, unit);
         long randMod = getRandomDelayModulusNanos(timeout, unit);
@@ -30,9 +28,9 @@ public class DeadlockAvoidance {
                 try {
                     if (toAcct.lock.tryLock()) {
                         try {
-                            if (fromAcct.getBalance().compareTo(amount) < 0)
+                            if (fromAcct.getBalance().compareTo(amount) < 0) {
                                 throw new InsufficientFundsException();
-                            else {
+                            } else {
                                 fromAcct.debit(amount);
                                 toAcct.credit(amount);
                                 return true;
@@ -40,15 +38,15 @@ public class DeadlockAvoidance {
                         } finally {
                             toAcct.lock.unlock();
                         }
-                    }
+                    } // toAcct.lock
                 } finally {
                     fromAcct.lock.unlock();
                 }
-            }
+            } // fromAcct.lock
             if (System.nanoTime() < stopTime)
                 return false;
             NANOSECONDS.sleep(fixedDelay + rnd.nextLong() % randMod);
-        }
+        } // while
     }
 
     private static final int DELAY_FIXED = 1;

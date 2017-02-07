@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.customSync;
 
 import java.util.concurrent.locks.*;
 
@@ -15,8 +15,10 @@ import net.jcip.annotations.*;
 @ThreadSafe
 public class SemaphoreOnLock {
     private final Lock lock = new ReentrantLock();
+
     // CONDITION PREDICATE: permitsAvailable (permits > 0)
     private final Condition permitsAvailable = lock.newCondition();
+
     @GuardedBy("lock") private int permits;
 
     SemaphoreOnLock(int initialPermits) {
@@ -30,10 +32,11 @@ public class SemaphoreOnLock {
 
     // BLOCKS-UNTIL: permitsAvailable
     public void acquire() throws InterruptedException {
-        lock.lock();
+        lock.lock(); // 1е место
         try {
-            while (permits <= 0)
-                permitsAvailable.await();
+            while (permits <= 0) {
+                permitsAvailable.await(); // 2е место
+            }
             --permits;
         } finally {
             lock.unlock();

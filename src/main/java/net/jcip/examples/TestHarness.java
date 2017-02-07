@@ -10,8 +10,8 @@ import java.util.concurrent.*;
  * @author Brian Goetz and Tim Peierls
  */
 public class TestHarness {
-    public long timeTasks(int nThreads, final Runnable task)
-            throws InterruptedException {
+
+    public long timeTasks(int nThreads, final Runnable task) throws InterruptedException {
         // для этого Latch мы вручную вызовем countDown()
         final CountDownLatch startGate = new CountDownLatch(1);
         // для этого Latch каждый поток в конце выполнения будет делать -1 у counter

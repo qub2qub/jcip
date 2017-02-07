@@ -1,7 +1,7 @@
-package net.jcip.examples;
+package net.jcip.examples.customSync;
 
 import net.jcip.annotations.*;
-import net.jcip.examples.testing.BaseBoundedBuffer;
+import net.jcip.examples.customSync.BaseBoundedBuffer;
 
 /**
  * SleepyBoundedBuffer
@@ -11,7 +11,8 @@ import net.jcip.examples.testing.BaseBoundedBuffer;
  * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
-        public class SleepyBoundedBuffer <V> extends BaseBoundedBuffer<V> {
+public class SleepyBoundedBuffer <V> extends BaseBoundedBuffer<V> {
+
     int SLEEP_GRANULARITY = 60;
 
     public SleepyBoundedBuffer() {
@@ -31,16 +32,17 @@ import net.jcip.examples.testing.BaseBoundedBuffer;
                 }
             }
             Thread.sleep(SLEEP_GRANULARITY);
-        }
+        } // while
     }
 
     public V take() throws InterruptedException {
         while (true) {
             synchronized (this) {
-                if (!isEmpty())
+                if (!isEmpty()) {
                     return doTake();
+                }
             }
             Thread.sleep(SLEEP_GRANULARITY);
-        }
+        } // while
     }
 }

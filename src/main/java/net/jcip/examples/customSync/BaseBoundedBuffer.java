@@ -1,4 +1,4 @@
-package net.jcip.examples.testing;
+package net.jcip.examples.customSync;
 
 import net.jcip.annotations.*;
 
@@ -22,16 +22,25 @@ public abstract class BaseBoundedBuffer <V> {
 
     protected synchronized final void doPut(V v) {
         buf[tail] = v;
-        if (++tail == buf.length)
+        if (++tail == buf.length) {
             tail = 0;
+        }
         ++count;
+     /*
+     т.е. номер ячейки всё время перемещается на следующий,
+     с конца переходит на первый.
+     т.о. данные записываются в каждую ячейку по порядку
+     и достаюся также по порядку.
+      Но где-то тут подвох...
+     */
     }
 
     protected synchronized final V doTake() {
         V v = buf[head];
         buf[head] = null;
-        if (++head == buf.length)
+        if (++head == buf.length) {
             head = 0;
+        }
         --count;
         return v;
     }

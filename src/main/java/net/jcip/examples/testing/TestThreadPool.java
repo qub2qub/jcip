@@ -26,6 +26,7 @@ public class TestThreadPool extends TestCase {
     public void testPoolExpansion() throws InterruptedException {
         int MAX_SIZE = 10;
         ExecutorService exec = Executors.newFixedThreadPool(MAX_SIZE);
+        ((ThreadPoolExecutor)exec).setThreadFactory(threadFactory);
 
         for (int i = 0; i < 10 * MAX_SIZE; i++)
             exec.execute(new Runnable() {
@@ -42,7 +43,7 @@ public class TestThreadPool extends TestCase {
              i++) {
             Thread.sleep(100);
         }
-        assertEquals(threadFactory.numCreated.get(), MAX_SIZE);
+        assertEquals(MAX_SIZE, threadFactory.numCreated.get());
         exec.shutdownNow();
     }
 }

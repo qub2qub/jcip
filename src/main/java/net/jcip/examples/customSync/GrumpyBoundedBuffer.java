@@ -1,7 +1,6 @@
-package net.jcip.examples;
+package net.jcip.examples.customSync;
 
 import net.jcip.annotations.*;
-import net.jcip.examples.testing.BaseBoundedBuffer;
 
 /**
  * GrumpyBoundedBuffer
@@ -21,14 +20,16 @@ import net.jcip.examples.testing.BaseBoundedBuffer;
     }
 
     public synchronized void put(V v) throws BufferFullException {
-        if (isFull())
+        if (isFull()) {
             throw new BufferFullException();
+        }
         doPut(v);
     }
 
     public synchronized V take() throws BufferEmptyException {
-        if (isEmpty())
+        if (isEmpty()) {
             throw new BufferEmptyException();
+        }
         return doTake();
     }
 }
@@ -38,6 +39,10 @@ class ExampleUsage {
     int SLEEP_GRANULARITY = 50;
 
     void useBuffer() throws InterruptedException {
+        /*
+        надо обрабатывать Exception
+
+         */
         while (true) {
             try {
                 String item = buffer.take();
