@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.nonBlocking;
 
 import java.util.concurrent.atomic.*;
 
@@ -12,7 +12,8 @@ import net.jcip.annotations.*;
  * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
-        public class ConcurrentStack <E> {
+public class ConcurrentStack <E> {
+
     AtomicReference<Node<E>> top = new AtomicReference<Node<E>>();
 
     public void push(E item) {
@@ -29,8 +30,9 @@ import net.jcip.annotations.*;
         Node<E> newHead;
         do {
             oldHead = top.get();
-            if (oldHead == null)
+            if (oldHead == null) {
                 return null;
+            }
             newHead = oldHead.next;
         } while (!top.compareAndSet(oldHead, newHead));
         return oldHead.item;

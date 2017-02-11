@@ -1,6 +1,7 @@
-package net.jcip.examples;
+package net.jcip.examples.nonBlocking;
 
 import net.jcip.annotations.*;
+import net.jcip.examples.nonBlocking.SimulatedCAS;
 
 /**
  * CasCounter

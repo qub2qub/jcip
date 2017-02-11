@@ -16,12 +16,6 @@ import net.jcip.annotations.*;
 public class OneShotLatch {
     private final Sync sync = new Sync();
 
-    public void printSyncState() {
-        System.out.println("................................." +
-                "state="+sync.getSyncState() + ", Q="+sync.getQueueLength());
-    }
-
-
     public void signal() {
         System.out.println("__ latch.signal __");
         // вызывает tryReleaseShared(), и в него же передаётся аргумент
@@ -33,6 +27,11 @@ public class OneShotLatch {
         sync.acquireSharedInterruptibly(0);
     }
 
+    public void printSyncState() {
+        System.out.println("................................." +
+                "state="+sync.getSyncState() + ", Q="+sync.getQueueLength());
+    }
+
     public void awaitExclusively() throws InterruptedException {
         // вызывает tryAcquireShared(), и в него же передаётся аргумент
         sync.acquireInterruptibly(0);
@@ -40,7 +39,7 @@ public class OneShotLatch {
     public void releaseExclusively() {
         System.out.println("__  sync.release __");
         // вызывает tryReleaseShared(), и в него же передаётся аргумент
-        sync.release(0);
+        sync.release(0); // и этим вызовом как бы освообждает лок/акваэ
     }
 
     /**
@@ -67,6 +66,9 @@ public class OneShotLatch {
 
         @Override
         protected boolean tryAcquire(int arg) {
+            // если гейт открыт -- то Acquire будет успешным,
+            // т.е. никто не будет ждать, а сразу пойдёт выполнение,
+            // но т.к. тут EXCLUSIVE ACQUISITION -- то только 1 сможет получить лок/акваэ
             return (getState() == 1);
         }
 
@@ -91,6 +93,7 @@ public class OneShotLatch {
                 public void run() {
                     try {
                         System.out.println(getName() + " created.");
+//                        latch.await();
                         latch.awaitExclusively();
                         long rnd = random.nextInt(3000);
                         System.out.println(getName() + " working....."+rnd);
@@ -115,6 +118,7 @@ public class OneShotLatch {
         System.out.println("==================================");
 
         latch.signal();
+//        latch.releaseExclusively();
     }
 
 }
