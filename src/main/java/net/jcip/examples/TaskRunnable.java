@@ -10,11 +10,11 @@ import java.util.concurrent.*;
  * @author Brian Goetz and Tim Peierls
  */
 public class TaskRunnable implements Runnable {
-    BlockingQueue<Task> queue;
+    BlockingQueue<Task> blockingQueue;
 
     public void run() {
         try {
-            processTask(queue.take());
+            processTask(blockingQueue.take());
         } catch (InterruptedException e) {
             // restore interrupted status
             Thread.currentThread().interrupt();

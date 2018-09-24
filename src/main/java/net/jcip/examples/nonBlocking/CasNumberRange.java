@@ -14,8 +14,7 @@ import net.jcip.annotations.*;
 @ThreadSafe
 public class CasNumberRange {
 
-    private final AtomicReference<IntPair> values =
-            new AtomicReference<IntPair>(new IntPair(0, 0));
+    private final AtomicReference<IntPair> values = new AtomicReference<IntPair>(new IntPair(0, 0));
     public int getLower() {
         return values.get().lower;
     }

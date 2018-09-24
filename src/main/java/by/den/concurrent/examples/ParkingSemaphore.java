@@ -16,7 +16,7 @@ public class ParkingSemaphore {
     // Парковочное место занято - true, свободно - false
     private static final boolean[] PARKING_PLACES = new boolean[5];
 
-    // Устанавливаем флаг "справедливый", в таком случае метод
+    // Устанавливаем флаг FAIR=true >> "справедливый", в таком случае метод
     // aсquire() будет раздавать разрешения в порядке очереди
     private static final Semaphore SEMAPHORE = new Semaphore(5, true);
 

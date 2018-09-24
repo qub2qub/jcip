@@ -18,7 +18,7 @@ public class PublishingVehicleTracker {
     private final Map<String, SafeMutablePoint> unmodifiableMap;
 
     public PublishingVehicleTracker(Map<String, SafeMutablePoint> locations) {
-        this.locations = new ConcurrentHashMap<String, SafeMutablePoint>(locations);
+        this.locations = new ConcurrentHashMap<>(locations);
         this.unmodifiableMap = Collections.unmodifiableMap(this.locations);
     }
 

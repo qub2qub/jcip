@@ -32,8 +32,7 @@ public class Memoizer3 <A, V> implements Computable<A, V> {
             f = ft;
             cache.put(arg, ft);
             // второй также положил в мап, и затёр прежнюю фьючу
-            // и все будут жать пока второй закончит вычисления.
-            //
+            // но каждый будет жать пока закончаися его собственные вычисления.
             ft.run(); // call to c.compute happens here
         }
         try {

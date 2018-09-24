@@ -12,8 +12,11 @@ public class Race2Phaser {
             Thread.sleep( (int) (Math.random() * 5000));
         }
 
-        while (START.getRegisteredParties() > 3) //Проверяем, собрались ли все автомобили
-            Thread.sleep(100);                  //у стартовой прямой. Если нет, ждем 100ms
+        //Проверяем, собрались ли все автомобили у стартовой прямой.
+        while (START.getRegisteredParties() > 3) {
+            // Если нет, ждем 100ms
+            Thread.sleep(100);
+        }
 
         Thread.sleep(100);
         System.out.println("На старт!");
