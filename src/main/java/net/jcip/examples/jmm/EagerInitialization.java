@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.jmm;
 
 import net.jcip.annotations.*;
 
@@ -10,13 +10,10 @@ import net.jcip.annotations.*;
  * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
-        public class EagerInitialization {
+public class EagerInitialization {
     private static Resource resource = new Resource();
-
     public static Resource getResource() {
         return resource;
     }
-
-    static class Resource {
-    }
+    static class Resource {}
 }

@@ -14,6 +14,13 @@ import java.sql.SQLException;
 public class ConnectionDispenser {
     static String DB_URL = "jdbc:mysql://localhost/mydatabase";
 
+    /**
+     * Создаём в классе переменную, в которой будет храниться конекшн к БД.
+     * В потоке в методе run передаём/создём этот объект ConnectionDispenser.
+     * Каждый поток на нём будет вызывать метод getConnection();
+     * Конекшн будет thread confinement.
+     * Т.е. initialValue в каждом потоке создаст новый/отдельный конекшн. Как? Когда?
+     */
     private ThreadLocal<Connection> connectionHolder = new ThreadLocal<Connection>() {
                 public Connection initialValue() {
                     try {

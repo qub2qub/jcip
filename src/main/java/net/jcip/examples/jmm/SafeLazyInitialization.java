@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.jmm;
 
 import net.jcip.annotations.*;
 
@@ -19,6 +19,5 @@ public class SafeLazyInitialization {
         return resource;
     }
 
-    static class Resource {
-    }
+    static class Resource {}
 }
