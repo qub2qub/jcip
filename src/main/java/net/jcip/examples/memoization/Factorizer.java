@@ -17,15 +17,8 @@ import net.jcip.examples.memoization.Memoizer;
 @ThreadSafe
 public class Factorizer extends GenericServlet implements Servlet {
 
-    private final Computable<BigInteger, BigInteger[]> c =
-            new Computable<BigInteger, BigInteger[]>() {
-                public BigInteger[] compute(BigInteger arg) {
-                    return factor(arg);
-                }
-            };
-
-    private final Computable<BigInteger, BigInteger[]> cache
-            = new Memoizer<BigInteger, BigInteger[]>(c);
+    private final Computable<BigInteger, BigInteger[]> c = this::factor;
+    private final Computable<BigInteger, BigInteger[]> cache = new Memoizer<>(c);
 
     public void service(ServletRequest req, ServletResponse resp) {
         try {

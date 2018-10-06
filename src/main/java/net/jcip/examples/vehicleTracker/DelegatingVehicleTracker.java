@@ -18,7 +18,7 @@ public class DelegatingVehicleTracker {
     private final Map<String, ImmutablePoint> unmodifiableMap;
 
     public DelegatingVehicleTracker(Map<String, ImmutablePoint> points) {
-        locations = new ConcurrentHashMap<String, ImmutablePoint>(points);
+        locations = new ConcurrentHashMap<>(points);
         unmodifiableMap = Collections.unmodifiableMap(locations);
     }
 
@@ -46,7 +46,7 @@ public class DelegatingVehicleTracker {
     // Alternate version of getLocations (Listing 4.8)
     public Map<String, ImmutablePoint> getLocationsAsStaticCopy() {
         return Collections.unmodifiableMap(
-                new HashMap<String, ImmutablePoint>(locations));
+                new HashMap<>(locations));
         // втавит в новую коллекцию копию объектов из locations
         // т.е. будет копия, которая более независима от исходных данных из locations
         // и если будет изменено в исходных locations -- то в новой копии ничего не изменится.
