@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.publication;
 
 import java.math.BigInteger;
 import java.util.concurrent.atomic.*;
@@ -16,8 +16,8 @@ import net.jcip.annotations.*;
 
 @NotThreadSafe
 public class UnsafeCachingFactorizer extends GenericServlet implements Servlet {
-    private final AtomicReference<BigInteger> lastNumber = new AtomicReference<BigInteger>();
-    private final AtomicReference<BigInteger[]> lastFactors = new AtomicReference<BigInteger[]>();
+    private final AtomicReference<BigInteger> lastNumber = new AtomicReference<>();
+    private final AtomicReference<BigInteger[]> lastFactors = new AtomicReference<>();
 
     public void service(ServletRequest req, ServletResponse resp) {
         BigInteger i = extractFromRequest(req);

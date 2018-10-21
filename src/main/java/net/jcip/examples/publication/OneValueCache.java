@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.publication;
 
 import java.math.BigInteger;
 import java.util.*;

@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.publication;
 
 import java.math.BigInteger;
 import javax.servlet.*;
@@ -21,6 +21,8 @@ public class VolatileCachedFactorizer extends GenericServlet implements Servlet 
         BigInteger[] factors = cache.getFactors(i);
         if (factors == null) {
             factors = factor(i);
+            // заменить immutable obj другим, а чтобы другие потоки его увидели-
+            // он сделан volatile
             cache = new OneValueCache(i, factors); // immutable class
         }
         encodeIntoResponse(resp, factors);

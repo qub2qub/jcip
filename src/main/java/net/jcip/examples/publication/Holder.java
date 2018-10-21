@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.publication;
 
 /**
  * Holder
@@ -12,10 +12,18 @@ public class Holder {
 
     public Holder(int n) {
         this.n = n;
+        // assertSanity(); // escape this and call in another thread
     }
 
     public void assertSanity() {
         if (n != n)
             throw new AssertionError("This statement is false.");
+    }
+
+    @Override
+    public String toString() {
+        return "Holder{" +
+                "n=" + n +
+                '}';
     }
 }

@@ -1,17 +1,17 @@
 package by.den.constructor;
 
 public class SubClass extends SuperClass {
-    int number;
+    final int number;
     public SubClass () {
         super();
         number = 2;
+        //number = 3; // cannot assign to final for the 2nd time.
     }
 
     public synchronized void doSomethingDangerous() {
         if(number == 2) {
             System.out.println("everything OK");
-        }
-        else {
+        } else {
             System.out.println("we have a problem.");
         }
     }
