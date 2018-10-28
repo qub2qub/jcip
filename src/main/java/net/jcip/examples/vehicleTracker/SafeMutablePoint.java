@@ -2,16 +2,12 @@ package net.jcip.examples.vehicleTracker;
 
 import net.jcip.annotations.*;
 
-/**
- * SafeMutablePoint
- *
- * @author Brian Goetz and Tim Peierls
- */
 @ThreadSafe
 public class SafeMutablePoint {
     @GuardedBy("this") private int x, y;
 
     private SafeMutablePoint(int[] a) {
+        // PRIVATE
         this(a[0], a[1]);
     }
 

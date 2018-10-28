@@ -6,11 +6,7 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * DelegatingVehicleTracker
- * <p/>
  * Delegating thread safety to a ConcurrentHashMap
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class DelegatingVehicleTracker {
@@ -39,14 +35,14 @@ public class DelegatingVehicleTracker {
      * @param y
      */
     public void setLocation(String id, int x, int y) {
-        if (locations.replace(id, new ImmutablePoint(x, y)) == null)
+        if (locations.replace(id, new ImmutablePoint(x, y)) == null) {
             throw new IllegalArgumentException("invalid vehicle name: " + id);
+        }
     }
 
     // Alternate version of getLocations (Listing 4.8)
     public Map<String, ImmutablePoint> getLocationsAsStaticCopy() {
-        return Collections.unmodifiableMap(
-                new HashMap<>(locations));
+        return Collections.unmodifiableMap(new HashMap<>(locations));
         // втавит в новую коллекцию копию объектов из locations
         // т.е. будет копия, которая более независима от исходных данных из locations
         // и если будет изменено в исходных locations -- то в новой копии ничего не изменится.

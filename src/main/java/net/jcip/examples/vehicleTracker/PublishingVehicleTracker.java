@@ -6,11 +6,7 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * PublishingVehicleTracker
- * <p/>
  * Vehicle tracker that safely publishes underlying state
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class PublishingVehicleTracker {
@@ -31,8 +27,9 @@ public class PublishingVehicleTracker {
     }
 
     public void setLocation(String id, int x, int y) {
-        if (!locations.containsKey(id))
+        if (!locations.containsKey(id)) {
             throw new IllegalArgumentException("invalid vehicle name: " + id);
+        }
         locations.get(id).set(x, y);
     }
 }

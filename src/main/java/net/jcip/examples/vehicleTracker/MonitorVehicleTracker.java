@@ -5,11 +5,7 @@ import java.util.*;
 import net.jcip.annotations.*;
 
 /**
- * MonitorVehicleTracker
- * <p/>
  * Monitor-based vehicle tracker implementation
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
  public class MonitorVehicleTracker {
@@ -37,11 +33,10 @@ import net.jcip.annotations.*;
     }
 
     private static Map<String, MutablePoint> deepCopy(Map<String, MutablePoint> m) {
-        Map<String, MutablePoint> result = new HashMap<String, MutablePoint>();
-
-        for (String id : m.keySet())
+        Map<String, MutablePoint> result = new HashMap<>();
+        for (String id : m.keySet()) {
             result.put(id, new MutablePoint(m.get(id)));
-
+        }
         return Collections.unmodifiableMap(result);
     }
 }

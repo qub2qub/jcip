@@ -1,15 +1,11 @@
-package net.jcip.examples;
+package net.jcip.examples.addnewmethod;
 
 import java.util.*;
 
 import net.jcip.annotations.*;
 
 /**
- * BetterVector
- * <p/>
  * Extending Vector to have a put-if-absent method
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class BetterVector <E> extends Vector<E> {
@@ -18,8 +14,9 @@ public class BetterVector <E> extends Vector<E> {
 
     public synchronized boolean putIfAbsent(E x) {
         boolean absent = !contains(x);
-        if (absent)
+        if (absent) {
             add(x);
+        }
         return absent;
     }
 }

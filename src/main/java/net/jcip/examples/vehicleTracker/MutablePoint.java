@@ -3,11 +3,7 @@ package net.jcip.examples.vehicleTracker;
 import net.jcip.annotations.*;
 
 /**
- * MutablePoint
- * <p/>
  * Mutable ImmutablePoint class similar to java.awt.ImmutablePoint
- *
- * @author Brian Goetz and Tim Peierls
  */
 @NotThreadSafe
 public class MutablePoint {
