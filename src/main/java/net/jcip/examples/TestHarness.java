@@ -3,11 +3,7 @@ package net.jcip.examples;
 import java.util.concurrent.*;
 
 /**
- * TestHarness
- * <p/>
  * Using CountDownLatch for starting and stopping threads in timing tests
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TestHarness {
 
@@ -38,6 +34,7 @@ public class TestHarness {
 
         long start = System.nanoTime();
         startGate.countDown(); // открываем первые порота
+        // главный поток блокируется пока не закончатся все другие потоки
         endGate.await(); // текущий поток блокируется, пока все потоки не сделают endGate.countDown()
         // после завершения всех поток counter достигнет 0 и будет замерено время их выполнения.
         long end = System.nanoTime();

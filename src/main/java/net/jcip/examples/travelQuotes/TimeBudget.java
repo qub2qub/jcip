@@ -1,27 +1,19 @@
-package net.jcip.examples.pageLoading;
+package net.jcip.examples.travelQuotes;
 
 import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * QuoteTask
- * <p/>
  * Requesting travel quotes under a time budget
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TimeBudget {
     private static ExecutorService exec = Executors.newCachedThreadPool();
 
     public List<TravelQuote> getRankedTravelQuotes(
-            TravelInfo travelInfo,
-            Set<TravelCompany> companies,
-            Comparator<TravelQuote> ranking,
-            long time,
-            TimeUnit unit)
-            throws InterruptedException {
+            TravelInfo travelInfo, Set<TravelCompany> companies, Comparator<TravelQuote> ranking,
+            long time, TimeUnit unit) throws InterruptedException {
 
-        List<QuoteTask> n1tasks = new ArrayList<QuoteTask>();
+        List<QuoteTask> n1tasks = new ArrayList<>();
 
         for (TravelCompany company : companies) {
             // заполняет массив Callable
@@ -31,7 +23,7 @@ public class TimeBudget {
         // invokeAll -- добавляет в том же порядке, как и исходная коллекция
         List<Future<TravelQuote>> n2futures = exec.invokeAll(n1tasks, time, unit);
 
-        List<TravelQuote> offerResults = new ArrayList<TravelQuote>(n1tasks.size());
+        List<TravelQuote> offerResults = new ArrayList<>(n1tasks.size());
         Iterator<QuoteTask> n1taskIterator = n1tasks.iterator();
 
         for (Future<TravelQuote> f : n2futures) {
@@ -49,49 +41,8 @@ public class TimeBudget {
                 offerResults.add(task.getTimeoutQuote(e));
             }
         }
-
-        Collections.sort(offerResults, ranking);
+        offerResults.sort(ranking);
         return offerResults;
     }
 
 }
-
-class QuoteTask implements Callable<TravelQuote> {
-    private final TravelCompany company;
-    private final TravelInfo travelInfo;
-
-    public QuoteTask(TravelCompany company, TravelInfo travelInfo) {
-        this.company = company;
-        this.travelInfo = travelInfo;
-    }
-
-    /**
-     * вернёт дефолтное значение при ошибке
-     */
-    TravelQuote getFailureQuote(Throwable t) {
-        return null;
-    }
-
-    /**
-     * вернёт дефолтное значение по истечению времени выполненияы
-     */
-    TravelQuote getTimeoutQuote(CancellationException e) {
-        return null;
-    }
-
-    public TravelQuote call() throws Exception {
-        // требовать; запрашивать квоты у компании (Коммерческое предложение)
-        return company.solicitQuote(travelInfo);
-    }
-}
-
-interface TravelCompany {
-    TravelQuote solicitQuote(TravelInfo travelInfo) throws Exception;
-}
-
-interface TravelQuote {
-}
-
-interface TravelInfo {
-}
-

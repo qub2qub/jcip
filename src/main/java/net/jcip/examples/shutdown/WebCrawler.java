@@ -10,11 +10,7 @@ import net.jcip.examples.shutdown.TrackingExecutor;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * WebCrawler
- * <p/>
  * Using TrackingExecutorService to save unfinished tasks for later execution
- *
- * @author Brian Goetz and Tim Peierls
  */
 public abstract class WebCrawler {
 

@@ -5,11 +5,7 @@ import net.jcip.examples.LaunderThrowable;
 import java.util.concurrent.*;
 
 /**
- * Memoizer
- * <p/>
  * Final implementation of Memoizer
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class Memoizer <A, V> implements Computable<A, V> {
     private final ConcurrentMap<A, Future<V>> cache = new ConcurrentHashMap<A, Future<V>>();

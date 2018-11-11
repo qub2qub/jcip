@@ -8,9 +8,7 @@ class SimpleBlockingQueue {
     class ProducerBQ implements Runnable {
         private final BlockingQueue queue;
         ProducerBQ(BlockingQueue q) { queue = q; }
-
         Object produce() { return new Object(); }
-
         public void run() {
             try {
                 while (true) { queue.put(produce()); }
@@ -21,15 +19,12 @@ class SimpleBlockingQueue {
     class ConsumerBQ implements Runnable {
         private final BlockingQueue queue;
         ConsumerBQ(BlockingQueue q) { queue = q; }
-
         void consume(Object x) { /* Do smth */ }
-
         public void run() {
             try {
                 while (true) { consume(queue.take()); }
             } catch (InterruptedException ex) { /*... handle ...*/}
         }
-
     }
 
     public static void main(String[] args) {

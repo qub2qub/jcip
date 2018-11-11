@@ -3,13 +3,12 @@ package net.jcip.examples;
 import java.util.*;
 
 /**
- * UnsafeVectorHelpers
- * <p/>
  * Compound actions on a Vector that may produce confusing results
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class UnsafeVectorHelpers {
+
+    // Одновременные изменения могут налжиться и сломать
+    // поэтому каждый должен синхонизироваться по самой коллекции.
     public static Object getLast(Vector list) {
         int lastIndex = list.size() - 1;
         return list.get(lastIndex);

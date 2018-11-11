@@ -48,6 +48,7 @@ public class DeliveryExchanger {
                 Thread.sleep(3000 + (long) Math.random() * 6000);
                 System.out.printf("Грузовик №%d приехал в %s и доставил: %s и %s.\n", number, dest, parcels[0], parcels[1]);
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

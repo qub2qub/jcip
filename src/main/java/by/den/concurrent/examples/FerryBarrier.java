@@ -41,19 +41,20 @@ public class FerryBarrier {
     //Стороны, которые будут достигать барьера
     public static class Car implements Runnable {
         private int carNumber;
-
         public Car(int carNumber) {
             this.carNumber = carNumber;
         }
-
         @Override
         public void run() {
             try {
                 System.out.printf(" --> (*) Автомобиль №%d подъехал к паромной переправе. Стало (%d) из Нужных [%d].\n",
-                        carNumber, BARRIER.getNumberWaiting()+1, BARRIER.getParties());
+                        carNumber, BARRIER.getNumberWaiting() + 1, BARRIER.getParties());
                 //Для указания потоку о том что он достиг барьера, нужно вызвать метод await()
                 //После этого данный поток блокируется, и ждет пока остальные стороны достигнут барьера
+                // TODO add BrokenBarrierException for 1 car
+                // TODO a unique arrival index for each thread, which can be used to "ELECT" a leader
                 BARRIER.await();
+                // TODO BARRIER.isBroken() BARRIER.reset();
                 // вопрос: как сделать чтобы авто уехал не дождавшись переправы?
                 // ответ: так нельзя, т.к. это нарушит барьер и условия для остальных ожидающих потоков.
                 System.out.printf(" (*) --> Автомобиль №%d продолжил движение.\n", carNumber);

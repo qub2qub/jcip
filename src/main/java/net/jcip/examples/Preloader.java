@@ -4,11 +4,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
- * Preloader
- * <p>
  * Using FutureTask to preload data that is needed later
- *
- * @author Brian Goetz and Tim Peierls
  */
 
 public class Preloader {
@@ -39,6 +35,7 @@ public class Preloader {
         try {
             return future.get();
         } catch (ExecutionException e) {
+            // каждый тип надо по-разному обработать и ещё есть unchecked CancellationException
             Throwable cause = e.getCause();
             if (cause instanceof DataLoadException)
                 throw (DataLoadException) cause;
