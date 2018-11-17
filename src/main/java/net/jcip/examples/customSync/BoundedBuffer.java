@@ -4,11 +4,7 @@ import net.jcip.annotations.*;
 import net.jcip.examples.customSync.BaseBoundedBuffer;
 
 /**
- * BoundedBuffer
- * <p/>
  * Bounded buffer using condition queues
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class BoundedBuffer <V> extends BaseBoundedBuffer<V> {

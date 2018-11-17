@@ -3,11 +3,7 @@ package net.jcip.examples.deadlock;
 import java.util.*;
 
 /**
- * DemonstrateDeadlock
- * <p/>
  * Driver loop that induces deadlock under typical conditions
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class DemonstrateDeadlock {
     private static final int NUM_THREADS = 20;

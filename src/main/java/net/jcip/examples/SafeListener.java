@@ -1,11 +1,7 @@
 package net.jcip.examples;
 
 /**
- * SafeListener
- * <p/>
  * Using a factory method to prevent the this reference from escaping during construction
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class SafeListener {
     private final EventListener listener;

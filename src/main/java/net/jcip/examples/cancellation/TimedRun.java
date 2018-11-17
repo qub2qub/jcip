@@ -4,11 +4,7 @@ import java.util.concurrent.*;
 import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
- * TimedRun
- * <p/>
  * Cancelling a task using Future
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TimedRun {
     private static final ExecutorService taskExec = Executors.newCachedThreadPool();

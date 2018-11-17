@@ -3,11 +3,7 @@ package net.jcip.examples.cancellation;
 import java.util.concurrent.*;
 
 /**
- * NoncancelableTask
- * <p/>
  * Noncancelable task that restores interruption before exit
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class NoncancelableTask {
     public Task getNextTask(BlockingQueue<Task> queue) {

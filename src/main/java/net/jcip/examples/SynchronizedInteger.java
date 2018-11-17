@@ -3,11 +3,7 @@ package net.jcip.examples;
 import net.jcip.annotations.*;
 
 /**
- * SynchronizedInteger
- * <p/>
  * Thread-safe mutable integer holder
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class SynchronizedInteger {

@@ -3,11 +3,7 @@ package net.jcip.examples.threadPools;
 import java.util.concurrent.*;
 
 /**
- * ThreadDeadlock
- * <p/>
  * Task that deadlocks in a single-threaded Executor
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class ThreadDeadlock {
     ExecutorService exec = Executors.newSingleThreadExecutor();

@@ -4,11 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * ConcurrentPuzzleSolver
- * <p/>
  * Concurrent version of puzzle solver
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class ConcurrentPuzzleSolver <P, M> {
     private final Puzzle<P, M> puzzle;

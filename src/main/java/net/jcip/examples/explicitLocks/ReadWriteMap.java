@@ -4,11 +4,7 @@ import java.util.*;
 import java.util.concurrent.locks.*;
 
 /**
- * ReadWriteMap
- * <p/>
  * Wrapping a Map with a read-write lock
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class ReadWriteMap <K,V> {
     private final Map<K, V> map;

@@ -5,11 +5,7 @@ import java.io.Writer;
 import java.util.concurrent.*;
 
 /**
- * LogWriter
- * <p/>
  * Producer-consumer logging service with no shutdown support
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class LogWriter {
     private final BlockingQueue<String> queue;

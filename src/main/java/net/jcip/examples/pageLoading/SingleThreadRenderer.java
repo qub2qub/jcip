@@ -3,11 +3,7 @@ package net.jcip.examples.pageLoading;
 import java.util.*;
 
 /**
- * SingleThreadRendere
- * <p/>
  * Rendering page elements sequentially
- *
- * @author Brian Goetz and Tim Peierls
  */
 public abstract class SingleThreadRenderer {
 

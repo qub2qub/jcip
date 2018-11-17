@@ -4,11 +4,7 @@ import net.jcip.annotations.*;
 import net.jcip.examples.nonBlocking.SimulatedCAS;
 
 /**
- * CasCounter
- * <p/>
  * Nonblocking counter using CAS
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class CasCounter {

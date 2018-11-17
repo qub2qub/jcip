@@ -5,11 +5,7 @@ import java.util.*;
 import net.jcip.annotations.*;
 
 /**
- * SafeStates
- * <p/>
  * Initialization safety for immutable objects
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class SafeStates {

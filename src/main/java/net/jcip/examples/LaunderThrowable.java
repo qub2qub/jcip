@@ -2,8 +2,6 @@ package net.jcip.examples;
 
 /**
  * StaticUtilities
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class LaunderThrowable {
 

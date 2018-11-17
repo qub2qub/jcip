@@ -7,11 +7,7 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * LogService
- * <p/>
  * Adding reliable cancellation to LogWriter
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class LogService {
     private final BlockingQueue<String> queue;

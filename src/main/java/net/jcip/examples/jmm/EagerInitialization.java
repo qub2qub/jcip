@@ -3,11 +3,7 @@ package net.jcip.examples.jmm;
 import net.jcip.annotations.*;
 
 /**
- * EagerInitialization
- * <p/>
  * Eager initialization
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class EagerInitialization {

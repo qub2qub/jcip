@@ -3,11 +3,7 @@ package net.jcip.examples;
 import net.jcip.annotations.*;
 
 /**
- * LazyInitRace
- *
  * Race condition in lazy initialization
- *
- * @author Brian Goetz and Tim Peierls
  */
 
 @NotThreadSafe

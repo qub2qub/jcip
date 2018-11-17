@@ -4,11 +4,7 @@ import java.util.concurrent.atomic.*;
 import java.util.logging.*;
 
 /**
- * MyAppThread
- * <p/>
  * Custom thread base class
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class MyAppThread extends Thread {
     public static final String DEFAULT_NAME = "MyAppThread";

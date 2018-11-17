@@ -3,11 +3,7 @@ package net.jcip.examples.jmm;
 import net.jcip.annotations.*;
 
 /**
- * ResourceFactory
- * <p/>
  * Lazy initialization holder class idiom
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class ResourceFactory {

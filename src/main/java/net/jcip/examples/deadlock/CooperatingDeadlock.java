@@ -6,11 +6,7 @@ import net.jcip.annotations.*;
 import net.jcip.examples.vehicleTracker.ImmutablePoint;
 
 /**
- * CooperatingDeadlock
- * <p/>
  * Lock-ordering deadlock between cooperating objects
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class CooperatingDeadlock {
     // Warning: deadlock-prone!

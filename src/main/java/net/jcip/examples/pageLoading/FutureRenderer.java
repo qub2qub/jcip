@@ -5,11 +5,7 @@ import java.util.concurrent.*;
 import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
- * FutureRenderer
- * <p/>
  * Waiting for image download with \Future
- *
- * @author Brian Goetz and Tim Peierls
  */
 public abstract class FutureRenderer {
     private final ExecutorService executor = Executors.newCachedThreadPool();

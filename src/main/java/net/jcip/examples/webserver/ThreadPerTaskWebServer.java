@@ -5,11 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * ThreadPerTaskWebServer
- * <p/>
  * Web server that starts a new thread for each request
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class ThreadPerTaskWebServer {
     public static void main(String[] args) throws IOException {

@@ -5,11 +5,7 @@ import java.util.concurrent.atomic.*;
 import net.jcip.annotations.*;
 
 /**
- * ConcurrentStack
- * <p/>
  * Nonblocking stack using Treiber's algorithm
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class ConcurrentStack <E> {

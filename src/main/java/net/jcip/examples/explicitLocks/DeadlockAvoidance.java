@@ -6,11 +6,7 @@ import java.util.concurrent.locks.*;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
- * DeadlockAvoidance
- * <p/>
  * Avoiding lock-ordering deadlock using tryLock
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class DeadlockAvoidance {
     private static Random rnd = new Random();

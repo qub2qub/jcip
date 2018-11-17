@@ -5,11 +5,7 @@ import java.util.concurrent.locks.*;
 import net.jcip.annotations.*;
 
 /**
- * ConditionBoundedBuffer
- * <p/>
  * Bounded buffer using explicit condition variables
- *
- * @author Brian Goetz and Tim Peierls
  */
 
 @ThreadSafe

@@ -5,11 +5,7 @@ import java.io.InputStream;
 import java.net.Socket;
 
 /**
- * ReaderThread_NonstandardCancellation
- * <p/>
  * Encapsulating nonstandard cancellation in a Thread by overriding interrupt
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class ReaderThread_NonstandardCancellation extends Thread {
     private static final int BUFSZ = 512;

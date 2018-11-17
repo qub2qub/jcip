@@ -5,11 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * ConnectionDispenser
- * <p/>
  * Using ThreadLocal to ensure thread confinement
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class ConnectionDispenser {
     static String DB_URL = "jdbc:mysql://localhost/mydatabase";

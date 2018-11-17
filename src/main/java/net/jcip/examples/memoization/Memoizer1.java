@@ -6,11 +6,7 @@ import java.util.*;
 import net.jcip.annotations.*;
 
 /**
- * Memoizer1
- *
  * Initial cache attempt using HashMap and synchronization
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class Memoizer1 <A, V> implements Computable<A, V> {
     @GuardedBy("this") private final Map<A, V> cache = new HashMap<>();
@@ -29,17 +25,19 @@ public class Memoizer1 <A, V> implements Computable<A, V> {
         return result;
     }
 
-//    interface Computable <A, V> {
-//        V compute(A arg) throws InterruptedException;
-//    }
+    /*
+    interface Computable <A, V> {
+        V compute(A arg) throws InterruptedException;
+    }
 
-//    class ExpensiveFunction
-//            implements Computable<String, BigInteger> {
-//        public BigInteger compute(String arg) {
-//            // after deep thought...
-//            return new BigInteger(arg);
-//        }
-//    }
+    class ExpensiveFunction
+            implements Computable<String, BigInteger> {
+        public BigInteger compute(String arg) {
+            // after deep thought...
+            return new BigInteger(arg);
+        }
+    }
+    */
 }
 
 

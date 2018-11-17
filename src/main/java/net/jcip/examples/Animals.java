@@ -3,11 +3,7 @@ package net.jcip.examples;
 import java.util.*;
 
 /**
- * Animals
- * <p/>
  * Thread confinement of local primitive and reference variables
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class Animals {
     Ark ark;

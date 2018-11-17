@@ -5,11 +5,7 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * BoundedBuffer
- * <p/>
- * Bounded buffer using \Semaphore
- *
- * @author Brian Goetz and Tim Peierls
+ * Bounded buffer using Semaphore
  */
 @ThreadSafe
 public class SemaphoreBoundedBuffer <E> {

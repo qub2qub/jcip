@@ -3,11 +3,7 @@ package net.jcip.examples.testing;
 import junit.framework.TestCase;
 
 /**
- * TestBoundedBuffer
- * <p/>
  * Basic unit tests for BoundedBuffer
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TestBoundedBuffer extends TestCase {
     private static final long LOCKUP_DETECT_TIMEOUT = 1000;

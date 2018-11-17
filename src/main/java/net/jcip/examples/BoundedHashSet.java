@@ -4,11 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * BoundedHashSet
- * <p/>
  * Using Semaphore to bound a collection
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class BoundedHashSet <T> {
     private final Set<T> set;

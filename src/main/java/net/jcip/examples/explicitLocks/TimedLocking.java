@@ -5,11 +5,7 @@ import java.util.concurrent.locks.*;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
- * TimedLocking
- * <p/>
  * Locking with a time budget
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TimedLocking {
     private Lock lock = new ReentrantLock();

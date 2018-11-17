@@ -4,11 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.*;
 
 /**
- * SwingUtilities
- * <p/>
  * Implementing SwingUtilities using an Executor
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class SwingUtilities {
     private static final ExecutorService exec = Executors.newSingleThreadExecutor(new SwingThreadFactory());

@@ -3,11 +3,7 @@ package net.jcip.examples.threadPools;
 import java.util.concurrent.atomic.*;
 
 /**
- * PuzzleSolver
- * <p/>
  * Solver that recognizes when no solution exists
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class PuzzleSolver <P,M> extends ConcurrentPuzzleSolver<P, M> {
 

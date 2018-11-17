@@ -4,11 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * GuiExecutor
- * <p/>
  * Executor built atop SwingUtilities
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class GuiExecutor extends AbstractExecutorService {
     // Singletons have a private constructor and a public factory

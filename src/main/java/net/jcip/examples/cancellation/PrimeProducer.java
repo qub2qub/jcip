@@ -4,11 +4,7 @@ import java.math.BigInteger;
 import java.util.concurrent.*;
 
 /**
- * PrimeProducer
- * <p/>
  * Using interruption for cancellation
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class PrimeProducer extends Thread {
 //public class PrimeProducer implements Runnable {

@@ -5,11 +5,7 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * BoundedExecutor
- * <p/>
  * Using a Semaphore to throttle task submission
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class BoundedExecutor {

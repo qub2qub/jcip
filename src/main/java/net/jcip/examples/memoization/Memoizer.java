@@ -8,7 +8,7 @@ import java.util.concurrent.*;
  * Final implementation of Memoizer
  */
 public class Memoizer <A, V> implements Computable<A, V> {
-    private final ConcurrentMap<A, Future<V>> cache = new ConcurrentHashMap<A, Future<V>>();
+    private final ConcurrentMap<A, Future<V>> cache = new ConcurrentHashMap<>();
     private final Computable<A, V> computable;
 
     public Memoizer(Computable<A, V> computable) {
@@ -37,7 +37,11 @@ public class Memoizer <A, V> implements Computable<A, V> {
             try {
                 return f.get();
             } catch (CancellationException e) {
-                cache.remove(arg, f); // удаляем из кэша старую фьючу, т.к. она закэнселилась.
+                // удаляем из кэша старую фьючу, т.к. она закэнселилась.
+                // чтобы избежать cache pollution.
+                // И тогда оба потока с future получат exception.
+                cache.remove(arg, f);
+                // а также можно это делать при RuntimeException (для уверенности)
             } catch (ExecutionException e) {
                 throw LaunderThrowable.launderThrowable(e.getCause());
             }

@@ -3,11 +3,7 @@ package net.jcip.examples.performance;
 import net.jcip.annotations.*;
 
 /**
- * StripedMap
- * <p/>
  * Hash-based map using lock striping
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class StripedMap {

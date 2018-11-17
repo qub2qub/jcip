@@ -2,11 +2,6 @@ package net.jcip.examples;
 
 import java.util.concurrent.locks.*;
 
-/**
- * InterruptibleLocking
- *
- * @author Brian Goetz and Tim Peierls
- */
 public class InterruptibleLocking {
     private Lock lock = new ReentrantLock();
 

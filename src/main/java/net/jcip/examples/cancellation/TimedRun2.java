@@ -6,11 +6,7 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
- * TimedRun2
- * <p/>
  * Interrupting a task in a dedicated thread
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TimedRun2 {
     private static final ScheduledExecutorService cancelExec = newScheduledThreadPool(1);

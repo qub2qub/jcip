@@ -8,11 +8,7 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * PrimeGenerator
- * <p/>
  * Using a volatile field to hold cancellation state
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class PrimeGenerator implements Runnable {

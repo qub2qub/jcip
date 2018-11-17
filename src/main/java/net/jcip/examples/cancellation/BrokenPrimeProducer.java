@@ -4,11 +4,7 @@ import java.math.BigInteger;
 import java.util.concurrent.*;
 
 /**
- * BrokenPrimeProducer
- * <p/>
  * Unreliable cancellation that can leave producers stuck in a blocking operation
- *
- * @author Brian Goetz and Tim Peierls
  */
 class BrokenPrimeProducer extends Thread {
     private final BlockingQueue<BigInteger> queue;

@@ -6,10 +6,7 @@ import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
  * CompletionService Renderer
- * <p/>
  * Using CompletionService to render page elements as they become available
- *
- * @author Brian Goetz and Tim Peierls
  */
 public abstract class Renderer {
     private final ExecutorService executor;

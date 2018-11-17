@@ -6,13 +6,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * OutOfTime
- * <p/>
  * Class illustrating confusing Timer behavior
- *
- * @author Brian Goetz and Tim Peierls
  */
-
 public class OutOfTime {
     public static void main(String[] args) throws Exception {
         Timer timer = new Timer();

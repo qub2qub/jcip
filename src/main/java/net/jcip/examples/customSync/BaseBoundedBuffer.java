@@ -3,11 +3,7 @@ package net.jcip.examples.customSync;
 import net.jcip.annotations.*;
 
 /**
- * BaseBoundedBuffer
- * <p/>
  * Base class for bounded buffer implementations
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public abstract class BaseBoundedBuffer <V> {

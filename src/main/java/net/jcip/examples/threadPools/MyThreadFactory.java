@@ -3,11 +3,7 @@ package net.jcip.examples.threadPools;
 import java.util.concurrent.*;
 
 /**
- * MyThreadFactory
- * <p/>
  * Custom thread factory
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class MyThreadFactory implements ThreadFactory {
     private final String poolName;

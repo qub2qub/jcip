@@ -4,11 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * TransformingSequential
- * <p/>
  * Transforming sequential execution into parallel execution
- *
- * @author Brian Goetz and Tim Peierls
  */
 public abstract class TransformingSequential {
 

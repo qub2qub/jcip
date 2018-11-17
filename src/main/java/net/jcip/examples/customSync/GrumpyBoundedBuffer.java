@@ -3,11 +3,7 @@ package net.jcip.examples.customSync;
 import net.jcip.annotations.*;
 
 /**
- * GrumpyBoundedBuffer
- * <p/>
  * Bounded buffer that balks when preconditions are not met
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
         public class GrumpyBoundedBuffer <V> extends BaseBoundedBuffer<V> {

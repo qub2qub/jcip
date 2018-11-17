@@ -4,11 +4,7 @@ import net.jcip.annotations.*;
 import net.jcip.examples.customSync.BaseBoundedBuffer;
 
 /**
- * SleepyBoundedBuffer
- * <p/>
  * Bounded buffer using crude blocking
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class SleepyBoundedBuffer <V> extends BaseBoundedBuffer<V> {

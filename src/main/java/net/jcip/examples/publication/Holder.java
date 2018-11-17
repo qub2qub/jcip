@@ -1,11 +1,7 @@
 package net.jcip.examples.publication;
 
 /**
- * Holder
- * <p/>
  * Class at risk of failure if not properly published
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class Holder {
     private int n;

@@ -3,11 +3,7 @@ package net.jcip.examples.testing;
 import java.util.concurrent.*;
 
 /**
- * TimedPutTakeTest
- * <p/>
  * Testing with a barrier-based timer
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TimedPutTakeTest extends PutTakeTest {
     private BarrierTimer timer = new BarrierTimer();

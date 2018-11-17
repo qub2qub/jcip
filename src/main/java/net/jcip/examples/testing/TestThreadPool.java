@@ -7,11 +7,7 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 /**
- * TestingThreadFactory
- * <p/>
  * Testing thread pool expansion
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TestThreadPool extends TestCase {
 

@@ -7,11 +7,6 @@ import java.util.*;
 import java.util.concurrent.*;
 import javax.swing.*;
 
-/**
- * ListenerExamples
- *
- * @author Brian Goetz and Tim Peierls
- */
 public class ListenerExamples {
     private static ExecutorService exec = Executors.newCachedThreadPool();
 

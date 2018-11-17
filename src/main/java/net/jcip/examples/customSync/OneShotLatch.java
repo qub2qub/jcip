@@ -6,11 +6,7 @@ import java.util.concurrent.locks.*;
 import net.jcip.annotations.*;
 
 /**
- * OneShotLatch
- * <p/>
  * Binary latch using AbstractQueuedSynchronizer
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class OneShotLatch {

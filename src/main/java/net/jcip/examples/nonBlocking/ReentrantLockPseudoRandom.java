@@ -5,11 +5,7 @@ import java.util.concurrent.locks.*;
 import net.jcip.annotations.*;
 
 /**
- * ReentrantLockPseudoRandom
- * <p/>
  * Random number generator using ReentrantLock
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class ReentrantLockPseudoRandom extends PseudoRandom {

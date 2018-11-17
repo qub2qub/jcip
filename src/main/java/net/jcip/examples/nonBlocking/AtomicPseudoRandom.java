@@ -5,11 +5,7 @@ import java.util.concurrent.atomic.*;
 import net.jcip.annotations.*;
 
 /**
- * AtomicPseudoRandom
- * <p/>
  * Random number generator using AtomicInteger
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class AtomicPseudoRandom extends PseudoRandom {

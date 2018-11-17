@@ -8,11 +8,7 @@ import net.jcip.examples.memoization.Computable;
 import net.jcip.examples.memoization.Memoizer;
 
 /**
- * Factorizer
- * <p/>
  * Factorizing servlet that caches results using Memoizer
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class Factorizer extends GenericServlet implements Servlet {

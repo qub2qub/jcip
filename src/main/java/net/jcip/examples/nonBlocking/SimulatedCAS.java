@@ -3,13 +3,8 @@ package net.jcip.examples.nonBlocking;
 import net.jcip.annotations.*;
 
 /**
- * SimulatedCAS
- * <p/>
  * Simulated CAS operation
- *
- * @author Brian Goetz and Tim Peierls
  */
-
 @ThreadSafe
 public class SimulatedCAS {
     @GuardedBy("this") private int value;

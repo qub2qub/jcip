@@ -1,11 +1,7 @@
 package net.jcip.examples.deadlock;
 
 /**
- * DynamicOrderDeadlock
- * <p/>
  * Dynamic lock-ordering deadlock
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class DynamicOrderDeadlock {
     // Warning: deadlock-prone!

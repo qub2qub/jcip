@@ -6,11 +6,7 @@ import java.util.regex.*;
 import net.jcip.annotations.*;
 
 /**
- * BetterAttributeStore
- * <p/>
  * Reducing lock duration
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class BetterAttributeStore {

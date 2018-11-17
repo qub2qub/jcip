@@ -3,13 +3,8 @@ package net.jcip.examples.performance;
 import java.util.concurrent.*;
 
 /**
- * WorkerThread
- * <p/>
  * Serialized access to a task queue
- *
- * @author Brian Goetz and Tim Peierls
  */
-
 public class WorkerThread extends Thread {
     private final BlockingQueue<Runnable> queue;
 

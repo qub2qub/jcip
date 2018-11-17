@@ -5,11 +5,7 @@ import java.util.*;
 import net.jcip.annotations.*;
 
 /**
- * ServerStatusAfterSplit
- * <p/>
  * ServerStatus refactored to use split locks
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class ServerStatusAfterSplit {

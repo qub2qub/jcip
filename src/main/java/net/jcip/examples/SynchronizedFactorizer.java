@@ -6,13 +6,8 @@ import javax.servlet.*;
 import net.jcip.annotations.*;
 
 /**
- * SynchronizedFactorizer
- *
  * Servlet that caches last result, but with unnacceptably poor concurrency
- *
- * @author Brian Goetz and Tim Peierls
  */
-
 @ThreadSafe
 public class SynchronizedFactorizer extends GenericServlet implements Servlet {
     @GuardedBy("this") private BigInteger lastNumber;

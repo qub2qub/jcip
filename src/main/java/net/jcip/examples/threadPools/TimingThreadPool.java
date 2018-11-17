@@ -5,11 +5,7 @@ import java.util.concurrent.atomic.*;
 import java.util.logging.*;
 
 /**
- * TimingThreadPool
- * <p/>
  * Thread pool extended with logging and timing
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TimingThreadPool extends ThreadPoolExecutor {
 

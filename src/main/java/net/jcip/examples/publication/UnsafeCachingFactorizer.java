@@ -7,13 +7,8 @@ import javax.servlet.*;
 import net.jcip.annotations.*;
 
 /**
- * UnsafeCachingFactorizer
- *
  * Servlet that attempts to cache its last result without adequate atomicity
- *
- * @author Brian Goetz and Tim Peierls
  */
-
 @NotThreadSafe
 public class UnsafeCachingFactorizer extends GenericServlet implements Servlet {
     private final AtomicReference<BigInteger> lastNumber = new AtomicReference<>();

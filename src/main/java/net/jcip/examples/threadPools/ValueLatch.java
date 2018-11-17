@@ -5,11 +5,7 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * ValueLatch
- * <p/>
  * Result-bearing latch used by ConcurrentPuzzleSolver
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class ValueLatch <T> {

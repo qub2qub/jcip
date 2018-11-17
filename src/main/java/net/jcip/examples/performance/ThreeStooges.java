@@ -5,12 +5,8 @@ import java.util.*;
 import net.jcip.annotations.*;
 
 /**
- * ThreeStooges
- * <p/>
  * Immutable class built out of mutable underlying objects,
  * demonstration of candidate for lock elision
- *
- * @author Brian Goetz and Tim Peierls
  */
 @Immutable
  public final class ThreeStooges {

@@ -6,11 +6,7 @@ import java.util.regex.*;
 import net.jcip.annotations.*;
 
 /**
- * AttributeStore
- * <p/>
  * Holding a lock longer than necessary
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class AttributeStore {

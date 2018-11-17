@@ -3,11 +3,7 @@ package net.jcip.examples;
 import java.util.*;
 
 /**
- * SafeVectorHelpers
- * <p/>
  * Compound actions on Vector using client-side locking
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class SafeVectorHelpers {
     public static Object getLast(Vector list) {

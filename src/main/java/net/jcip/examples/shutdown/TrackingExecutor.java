@@ -4,11 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * TrackingExecutor
- * <p/>
  * ExecutorService that keeps track of cancelled tasks after shutdown
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TrackingExecutor extends AbstractExecutorService {
 

@@ -4,10 +4,7 @@ import java.util.concurrent.*;
 
 /**
  * InterruptBorrowedThread
- * <p/>
  * Scheduling an interrupt on a borrowed thread
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TimedRun1 {
     private static final ScheduledExecutorService cancelExec = Executors.newScheduledThreadPool(1);

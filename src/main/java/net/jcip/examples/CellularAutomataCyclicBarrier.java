@@ -3,11 +3,7 @@ package net.jcip.examples;
 import java.util.concurrent.*;
 
 /**
- * CellularAutomataCyclicBarrier
- *
  * Coordinating computation in a cellular automaton with CyclicBarrier
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class CellularAutomataCyclicBarrier {
     private final Board mainBoard;

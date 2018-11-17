@@ -5,12 +5,8 @@ import java.util.concurrent.locks.*;
 import net.jcip.annotations.*;
 
 /**
- * SemaphoreOnLock
- * <p/>
  * Counting semaphore implemented using Lock
  * (Not really how java.util.concurrent.Semaphore is implemented)
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class SemaphoreOnLock {

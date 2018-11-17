@@ -5,11 +5,7 @@ import java.util.*;
 import net.jcip.annotations.*;
 
 /**
- * PuzzleNode
- * <p/>
  * Link node for the puzzle solving framework
- *
- * @author Brian Goetz and Tim Peierls
  */
 @Immutable
 public class PuzzleNode <P, M> {

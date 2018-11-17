@@ -5,11 +5,7 @@ import java.util.concurrent.atomic.*;
 import net.jcip.annotations.*;
 
 /**
- * CasNumberRange
- * <p/>
  * Preserving multivariable invariants using CAS
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class CasNumberRange {

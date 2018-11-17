@@ -3,11 +3,7 @@ package net.jcip.examples.jmm;
 import net.jcip.annotations.*;
 
 /**
- * DoubleCheckedLocking
- * <p/>
  * Double-checked-locking antipattern
- *
- * @author Brian Goetz and Tim Peierls
  */
 @NotThreadSafe
 public class DoubleCheckedLocking {

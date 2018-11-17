@@ -5,11 +5,7 @@ import java.util.*;
 import net.jcip.annotations.*;
 
 /**
- * ServerStatusBeforeSplit
- * <p/>
  * Candidate for lock splitting
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class ServerStatusBeforeSplit {

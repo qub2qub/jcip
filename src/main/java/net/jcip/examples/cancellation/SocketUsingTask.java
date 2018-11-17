@@ -7,13 +7,8 @@ import java.util.concurrent.*;
 import net.jcip.annotations.*;
 
 /**
- * SocketUsingTask
- * <p/>
  * Encapsulating nonstandard cancellation in a task with newTaskFor
- *
- * @author Brian Goetz and Tim Peierls
  */
-
 public abstract class SocketUsingTask <T> implements CancellableTask<T> {
     @GuardedBy("this") private Socket socket;
 

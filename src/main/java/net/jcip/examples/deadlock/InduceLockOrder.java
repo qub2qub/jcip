@@ -1,11 +1,7 @@
 package net.jcip.examples.deadlock;
 
 /**
- * InduceLockOrder
- *
  * Inducing a lock order to avoid deadlock
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class InduceLockOrder {
     private final Object tieLock = new Object(); // "tie breaking" lock

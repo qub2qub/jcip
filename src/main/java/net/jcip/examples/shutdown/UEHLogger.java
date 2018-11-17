@@ -3,11 +3,7 @@ package net.jcip.examples.shutdown;
 import java.util.logging.*;
 
 /**
- * UEHLogger
- * <p/>
  * UncaughtExceptionHandler that logs the exception
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class UEHLogger implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread t, Throwable e) {

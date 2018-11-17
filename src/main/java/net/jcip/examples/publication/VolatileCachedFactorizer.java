@@ -6,11 +6,7 @@ import javax.servlet.*;
 import net.jcip.annotations.*;
 
 /**
- * VolatileCachedFactorizer
- * <p/>
  * Caching the last result using a volatile reference to an immutable holder object
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class VolatileCachedFactorizer extends GenericServlet implements Servlet {

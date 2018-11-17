@@ -7,11 +7,7 @@ import java.util.concurrent.*;
 import java.util.logging.*;
 
 /**
- * LifecycleWebServer
- * <p/>
  * Web server with shutdown support
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class LifecycleWebServer {
     private final ExecutorService exec = Executors.newCachedThreadPool();

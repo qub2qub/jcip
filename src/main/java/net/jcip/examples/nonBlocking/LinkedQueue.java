@@ -5,11 +5,7 @@ import java.util.concurrent.atomic.*;
 import net.jcip.annotations.*;
 
 /**
- * LinkedQueue
- * <p/>
  * Insertion in the Michael-Scott nonblocking queue algorithm
- *
- * @author Brian Goetz and Tim Peierls
  */
 @ThreadSafe
 public class LinkedQueue <E> {

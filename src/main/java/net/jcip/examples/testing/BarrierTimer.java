@@ -1,11 +1,7 @@
 package net.jcip.examples.testing;
 
 /**
- * BarrierTimer
- * <p/>
  * Barrier-based timer
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class BarrierTimer implements Runnable {
     private boolean started;

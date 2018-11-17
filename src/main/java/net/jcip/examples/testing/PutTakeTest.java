@@ -6,11 +6,7 @@ import java.util.concurrent.atomic.*;
 import junit.framework.TestCase;
 
 /**
- * PutTakeTest
- * <p/>
  * Producer-consumer test program for BoundedBuffer
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class PutTakeTest extends TestCase {
     protected static final ExecutorService pool = Executors.newCachedThreadPool();

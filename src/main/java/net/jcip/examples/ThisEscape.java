@@ -1,11 +1,7 @@
 package net.jcip.examples;
 
 /**
- * ThisEscape
- * <p/>
  * Implicitly allowing the this reference to escape
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class ThisEscape {
     public ThisEscape(EventSource source) {

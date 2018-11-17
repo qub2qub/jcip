@@ -3,11 +3,7 @@ package net.jcip.examples.gui;
 import java.util.concurrent.*;
 
 /**
- * BackgroundTask
- * <p/>
  * Background task class supporting cancellation, completion notification, and progress notification
- *
- * @author Brian Goetz and Tim Peierls
  */
 
 public abstract class BackgroundTask <V> implements Runnable, Future<V> {

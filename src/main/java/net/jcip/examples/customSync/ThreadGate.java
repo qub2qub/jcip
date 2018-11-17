@@ -3,11 +3,7 @@ package net.jcip.examples.customSync;
 import net.jcip.annotations.*;
 
 /**
- * ThreadGate
- * <p/>
- * Recloseable gate using wait and notifyAll
- *
- * @author Brian Goetz and Tim Peierls
+ * Re-closeable gate using wait and notifyAll
  */
 @ThreadSafe
 public class ThreadGate {

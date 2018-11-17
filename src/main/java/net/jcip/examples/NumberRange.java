@@ -3,13 +3,8 @@ package net.jcip.examples;
 import java.util.concurrent.atomic.*;
 
 /**
- * NumberRange
- * <p/>
  * Number range class that does not sufficiently protect its invariants
- *
- * @author Brian Goetz and Tim Peierls
  */
-
 public class NumberRange {
     // INVARIANT: lower <= upper
     private final AtomicInteger lower = new AtomicInteger(0);

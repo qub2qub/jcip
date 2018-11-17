@@ -6,11 +6,7 @@ import java.net.Socket;
 import java.util.concurrent.*;
 
 /**
- * TaskExecutionWebServer
- * <p/>
  * Web server using a thread pool
- *
- * @author Brian Goetz and Tim Peierls
  */
 public class TaskExecutionWebServer {
     private static final int NTHREADS = 100;
