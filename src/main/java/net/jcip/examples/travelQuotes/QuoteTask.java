@@ -12,16 +12,12 @@ class QuoteTask implements Callable<TravelQuote> {
         this.travelInfo = travelInfo;
     }
 
-    /**
-     * вернёт дефолтное значение при ошибке
-     */
+    /** вернёт дефолтное значение при ошибке */
     TravelQuote getFailureQuote(Throwable t) {
         return null;
     }
 
-    /**
-     * вернёт дефолтное значение по истечению времени выполненияы
-     */
+    /** вернёт дефолтное значение по истечению времени выполненияы */
     TravelQuote getTimeoutQuote(CancellationException e) {
         return null;
     }

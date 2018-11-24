@@ -6,15 +6,15 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 /**
  * Fetching an advertisement with a time budget
  */
-public class RenderWithTimeBudget {
+public class V4RenderWithTimeBudget {
     private static final Ad DEFAULT_AD = new Ad();
     private static final long TIME_BUDGET = 1000;
-    private static final ExecutorService exec = Executors.newCachedThreadPool();
+    private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
     Page renderPageWithAd() throws InterruptedException {
 
         long endNanos = System.nanoTime() + TIME_BUDGET;
-        Future<Ad> f = exec.submit(new FetchAdTask());
+        Future<Ad> f = EXECUTOR.submit(new FetchAdTask());
         // Render the page while waiting for the ad
         Page page = renderPageBody();
         Ad ad;

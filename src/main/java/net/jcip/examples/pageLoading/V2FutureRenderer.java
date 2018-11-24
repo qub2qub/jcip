@@ -2,29 +2,34 @@ package net.jcip.examples.pageLoading;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
+
 import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
- * Waiting for image download with \Future
+ * Waiting for image download with Future
  */
-public abstract class FutureRenderer {
+public abstract class V2FutureRenderer implements BasicPageRenderer {
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     void renderPage(CharSequence source) {
 
         final List<ImageInfo> imageInfos = scanForImageInfo(source);
+        // всё равно только 2 потока: 1й для текста и 2й для всех картинок
         Callable<List<ImageData>> downloadImageTask =
-                new Callable<List<ImageData>>() {
-                    public List<ImageData> call() {
-                        List<ImageData> result = new ArrayList<ImageData>();
-                        for (ImageInfo imageInfo : imageInfos) {
-                            result.add(imageInfo.downloadImage());
-                        }
-                        return result;
-                    }
-                };
-
-        // зпускаем загрузку картинок
+                () -> imageInfos.stream()
+                        .map(ImageInfo::downloadImage)
+                        .collect(Collectors.toList());
+        /*new Callable<List<ImageData>>() {
+            public List<ImageData> call() {
+                List<ImageData> result = new ArrayList<>();
+                for (ImageInfo imageInfo : imageInfos) {
+                    result.add(imageInfo.downloadImage());
+                }
+                return result;
+            }
+        };*/
+        // зпускаем загрузку картинок (хоть миллион потоков в этом случаев)
         Future<List<ImageData>> future = executor.submit(downloadImageTask);
         // отрисовываем текст на странице
         renderText(source);
@@ -46,16 +51,4 @@ public abstract class FutureRenderer {
         }
     }
 
-    interface ImageData {
-    }
-
-    interface ImageInfo {
-        ImageData downloadImage();
-    }
-
-    abstract void renderText(CharSequence s);
-
-    abstract List<ImageInfo> scanForImageInfo(CharSequence s);
-
-    abstract void renderImage(ImageData i);
 }
