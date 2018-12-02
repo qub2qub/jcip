@@ -17,11 +17,20 @@ class BrokenPrimeProducer extends Thread {
     public void run() {
         try {
             BigInteger p = BigInteger.ONE;
-            while (!cancelled) // не сработает, т.к. будет заблокрован в queue
+            while (!cancelled) { // не сработает, т.к. будет заблокрован в queue
+                // а блокирующий метод в queue отреагирует на Thread.currentThread().isInterrupted()
+                // и выбросит InterruptedException, т.е. имеем 2 cancellation points
                 queue.put(p = p.nextProbablePrime());
+            }
+
         } catch (InterruptedException consumed) {
-            // но при exc код перейдёт сюда и прога закончится.
-            // но, например, когда очередь будет забита -- екс не будет, и сюда не зайдет. очередь просто заблокируется.
+            // при InterruptedException код перейдёт сюда и прога закончится.
+            // на всякий случай можно выставить в true, т.к. сюда мы попадём
+            // из прерывания блокирующего метода.
+            cancelled = true;
+            // а когда очередь забита -- она заблокируется,
+            // и мы не сможем прочитать cancelled флаг, но тут нам поможет
+            // InterruptedException из блокирующего метода при установке Thread.currentThread().interrupt();
         }
     }
 
