@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import net.jcip.annotations.*;
-import net.jcip.examples.shutdown.TrackingExecutor;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -14,37 +13,33 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public abstract class WebCrawler {
 
-    private volatile TrackingExecutor exec;
-
-    @GuardedBy("this") private final Set<URL> urlsToCrawl = new HashSet<URL>();
-
-    private final ConcurrentMap<URL, Boolean> seen = new ConcurrentHashMap<URL, Boolean>();
-
     private static final long TIMEOUT = 500;
     private static final TimeUnit UNIT = MILLISECONDS;
+    private volatile TrackingExecutor executor;
+    private final ConcurrentMap<URL, Boolean> seen = new ConcurrentHashMap<>();
+    @GuardedBy("this")
+    private final Set<URL> urlsToCrawl = new HashSet<>();
 
     public WebCrawler(URL startUrl) {
         urlsToCrawl.add(startUrl);
     }
 
     public synchronized void start() {
-        exec = new TrackingExecutor(Executors.newCachedThreadPool());
-
+        executor = new TrackingExecutor(Executors.newCachedThreadPool());
         for (URL url : urlsToCrawl) {
             submitCrawlTask(url);
         }
-
         urlsToCrawl.clear();
     }
 
     public synchronized void stop() throws InterruptedException {
         try {
-            saveUncrawled(exec.shutdownNow());
-            if (exec.awaitTermination(TIMEOUT, UNIT)) {
-                saveUncrawled(exec.getCancelledTasks());
+            saveUncrawled(executor.shutdownNow());
+            if (executor.awaitTermination(TIMEOUT, UNIT)) {
+                saveUncrawled(executor.getCancelledTasks());
             }
         } finally {
-            exec = null;
+            executor = null;
         }
     }
 
@@ -56,18 +51,17 @@ public abstract class WebCrawler {
         }
     }
 
-    private void submitCrawlTask(URL u) {
-        exec.execute(new CrawlTask(u));
+    private void submitCrawlTask(URL url) {
+        executor.execute(new CrawlTask(url));
     }
 
     private class CrawlTask implements Runnable {
         private final URL url;
+        private int count = 1;
 
         CrawlTask(URL url) {
             this.url = url;
         }
-
-        private int count = 1;
 
         boolean alreadyCrawled() {
             return seen.putIfAbsent(url, true) != null;
@@ -84,7 +78,7 @@ public abstract class WebCrawler {
                 if (Thread.currentThread().isInterrupted()) {
                     return;
                 }
-                // создадутся новые таски с для каждого полученного урла
+                // создадутся новые таски для каждого полученного урла
                 submitCrawlTask(link);
             }
         }

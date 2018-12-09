@@ -8,45 +8,53 @@ import java.util.concurrent.*;
  */
 public class TrackingExecutor extends AbstractExecutorService {
 
-    private final ExecutorService exec;
+    private final ExecutorService executor;
 
-    private final Set<Runnable> tasksCancelledAtShutdown =
-            Collections.synchronizedSet(new HashSet<Runnable>());
+    private final Set<Runnable> tasksCancelledAtShutdown = Collections.synchronizedSet(new HashSet<>());
 
-    public TrackingExecutor(ExecutorService exec) {
-        this.exec = exec;
+    public TrackingExecutor(ExecutorService executor) {
+        this.executor = executor;
     }
 
     public void shutdown() {
-        exec.shutdown();
+        executor.shutdown();
     }
 
     public List<Runnable> shutdownNow() {
-        return exec.shutdownNow();
+        return executor.shutdownNow();
     }
 
     public boolean isShutdown() {
-        return exec.isShutdown();
+        return executor.isShutdown();
     }
 
     public boolean isTerminated() {
-        return exec.isTerminated();
+        return executor.isTerminated();
     }
 
-    public boolean awaitTermination(long timeout, TimeUnit unit)
-            throws InterruptedException {
-        return exec.awaitTermination(timeout, unit);
+    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+        return executor.awaitTermination(timeout, unit);
     }
 
     public List<Runnable> getCancelledTasks() {
-        if (!exec.isTerminated()) {
+        if (!executor.isTerminated()) {
             throw new IllegalStateException(/*...*/);
         }
-        return new ArrayList<Runnable>(tasksCancelledAtShutdown);
+        return new ArrayList<>(tasksCancelledAtShutdown);
     }
 
     public void execute(final Runnable runnable) {
-        exec.execute(new Runnable() {
+        executor.execute(() -> {
+            try {
+                runnable.run();
+            } finally {
+                // In order for this technique to work, the tasks must preserve the thread's interrupted status
+                // when they return, which well behaved tasks will do anyway.
+                if (isShutdown() && Thread.currentThread().isInterrupted())
+                    tasksCancelledAtShutdown.add(runnable);
+            }
+        });
+        /* executor.execute(new Runnable() {
             public void run() {
                 try {
                     runnable.run();
@@ -55,6 +63,6 @@ public class TrackingExecutor extends AbstractExecutorService {
                         tasksCancelledAtShutdown.add(runnable);
                 }
             }
-        });
+        }); */
     }
 }

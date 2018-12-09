@@ -19,7 +19,7 @@ public class IndexingService {
 
     public IndexingService(File root, final FileFilter fileFilter) {
         this.root = root;
-        this.queue = new LinkedBlockingQueue<File>(CAPACITY);
+        this.queue = new LinkedBlockingQueue<>(CAPACITY);
         this.fileFilter = f -> f.isDirectory() || fileFilter.accept(f);
     }
 
@@ -31,13 +31,15 @@ public class IndexingService {
         public void run() {
             try {
                 crawl(root);
-            } catch (InterruptedException e) { /* fall through */
+            } catch (InterruptedException e) {
+                // fall through
             } finally {
                 while (true) {
                     try {
                         queue.put(POISON);
                         break;
-                    } catch (InterruptedException e1) { /* retry */
+                    } catch (InterruptedException e1) {
+                        // retry
                     }
                 }
             }
@@ -65,6 +67,7 @@ public class IndexingService {
                         indexFile(file);
                 }
             } catch (InterruptedException consumed) {
+                // ignore
             }
         }
         public void indexFile(File file) {

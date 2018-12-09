@@ -5,8 +5,7 @@ import java.util.concurrent.locks.*;
 public class InterruptibleLocking {
     private Lock lock = new ReentrantLock();
 
-    public boolean sendOnSharedLine(String message)
-            throws InterruptedException {
+    public boolean sendOnSharedLine(String message) throws InterruptedException {
         lock.lockInterruptibly();
         try {
             return cancellableSendOnSharedLine(message);

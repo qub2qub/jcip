@@ -14,7 +14,8 @@ import net.jcip.annotations.*;
 public class PrimeGenerator implements Runnable {
     private static ExecutorService exec = Executors.newCachedThreadPool();
 
-    @GuardedBy("this") private final List<BigInteger> primes = new ArrayList<BigInteger>();
+    @GuardedBy("this")
+    private final List<BigInteger> primes = new ArrayList<>();
 
     private volatile boolean cancelled;
 
@@ -33,11 +34,10 @@ public class PrimeGenerator implements Runnable {
     }
 
     public synchronized List<BigInteger> get() {
-        return new ArrayList<BigInteger>(primes);
+        return new ArrayList<>(primes);
     }
 
     static List<BigInteger> aSecondOfPrimes() throws InterruptedException {
-
         PrimeGenerator generator = new PrimeGenerator();
         exec.execute(generator);
         try {
@@ -55,7 +55,7 @@ public class PrimeGenerator implements Runnable {
             exec.shutdown(); // мой способ остановить потоки из ExecutorService
             //shutdownNow() пробует остановить и запущенные задачи, если они есть.
             // поэтому чтобы дождаться выполнения запущенных и уже запланированных задач --
-            // надо вызываться просто shutdown()
+            // надо вызывать метод shutdown()
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

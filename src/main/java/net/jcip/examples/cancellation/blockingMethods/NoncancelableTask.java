@@ -1,4 +1,4 @@
-package net.jcip.examples.cancellation;
+package net.jcip.examples.cancellation.blockingMethods;
 
 import java.util.concurrent.*;
 
@@ -13,13 +13,14 @@ public class NoncancelableTask {
                 try {
                     return queue.take();
                 } catch (InterruptedException e) {
-                    interrupted = true;
-                    // fall through and retry
+                    interrupted = true; // save the interruption status locally
+                    // fall through and retry = провал (потерьпеть неудачу) и повторить попытку
                 }
             }
         } finally {
-            if (interrupted)
+            if (interrupted) { // restore the interruption status just before returning
                 Thread.currentThread().interrupt();
+            }
         }
     }
 

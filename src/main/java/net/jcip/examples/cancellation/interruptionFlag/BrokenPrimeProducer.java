@@ -1,4 +1,4 @@
-package net.jcip.examples.cancellation;
+package net.jcip.examples.cancellation.interruptionFlag;
 
 import java.math.BigInteger;
 import java.util.concurrent.*;
@@ -36,6 +36,30 @@ class BrokenPrimeProducer extends Thread {
 
     public void cancel() {
         cancelled = true;
+    }
+
+    void consumePrimes() throws InterruptedException {
+        BlockingQueue<BigInteger> primes = new LinkedBlockingQueue<>();
+        BrokenPrimeProducer producer = new BrokenPrimeProducer(primes);
+        producer.start();
+        // The producer thread generates primes and places them on a blocking queue.
+        // If the producer gets ahead of the consumer, the queue will fill up and `queue.put()` will block.
+        try {
+            while (needMorePrimes()) consume(primes.take());
+        } finally {
+            // т.е. вызовем .cancel() но producer может не остановиться, если очередь всё ещё полная
+            // и он ждёт, т.е. заблокирован на queue.put() чтобы в неё положить результат,
+            // и только поьлм producer сможет проверить флаг.
+            producer.cancel();
+        }
+    }
+
+    private void consume(BigInteger prime) {
+        // do smt
+    }
+
+    private boolean needMorePrimes() {
+        return false;
     }
 }
 
