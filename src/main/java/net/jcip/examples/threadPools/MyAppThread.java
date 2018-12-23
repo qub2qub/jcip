@@ -20,6 +20,9 @@ public class MyAppThread extends Thread {
     public MyAppThread(Runnable runnable, String name) {
         super(runnable, name + "-" + created.incrementAndGet());
 
+        /* Это если исключение будет в самом потоке шкедьюлера,
+         а не в том, в котором будет выполняться задача.
+          Исключения в задаче попадут в ExecutionExceptions у соответствующей Future.*/
         setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
                 log.log(Level.SEVERE, "UNCAUGHT in thread " + t.getName(), e);
