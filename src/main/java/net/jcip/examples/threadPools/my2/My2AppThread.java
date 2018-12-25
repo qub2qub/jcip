@@ -9,7 +9,10 @@ public class My2AppThread extends Thread {
     public My2AppThread(Runnable runnable, String name, My2ThreadFactory threadFactory) {
         super(runnable, name + "-" + threadFactory.incrementCreated());
         this.threadFactory = threadFactory;
-//        setUncaughtExceptionHandler((t, e) -> threadFactory.incrementUncaught());
+        setUncaughtExceptionHandler((t, e) -> {
+            System.out.println("Thread UncaughtExceptionHandler: " + e.getMessage());
+            threadFactory.incrementUncaught();
+        });
     }
 
     @Override

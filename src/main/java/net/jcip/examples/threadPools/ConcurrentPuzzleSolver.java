@@ -8,16 +8,16 @@ import java.util.concurrent.*;
  */
 public class ConcurrentPuzzleSolver <P, M> {
     private final Puzzle<P, M> puzzle;
-    private final ExecutorService exec;
+    private final ExecutorService executor;
     private final ConcurrentMap<P, Boolean> seen;
-    protected final ValueLatch<PuzzleNode<P, M>> solution = new ValueLatch<PuzzleNode<P, M>>();
+    protected final ValueLatch<PuzzleNode<P, M>> solution = new ValueLatch<>();
 
     public ConcurrentPuzzleSolver(Puzzle<P, M> puzzle) {
         this.puzzle = puzzle;
-        this.exec = initThreadPool();
-        this.seen = new ConcurrentHashMap<P, Boolean>();
-        if (exec instanceof ThreadPoolExecutor) {
-            ThreadPoolExecutor tpe = (ThreadPoolExecutor) exec;
+        this.executor = initThreadPool();
+        this.seen = new ConcurrentHashMap<>();
+        if (executor instanceof ThreadPoolExecutor) {
+            ThreadPoolExecutor tpe = (ThreadPoolExecutor) executor;
             tpe.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
         }
     }
@@ -29,12 +29,12 @@ public class ConcurrentPuzzleSolver <P, M> {
     public List<M> solve() throws InterruptedException {
         try {
             P p = puzzle.initialPosition();
-            exec.execute(newTask4Puzzle(p, null, null));
+            executor.execute(newTask4Puzzle(p, null, null));
             // block until solution found
             PuzzleNode<P, M> solnPuzzleNode = solution.getValue();
             return (solnPuzzleNode == null) ? null : solnPuzzleNode.asMoveList();
         } finally {
-            exec.shutdown();
+            executor.shutdown();
         }
     }
 
@@ -42,9 +42,7 @@ public class ConcurrentPuzzleSolver <P, M> {
         return new SolverTask(pos, move, node);
     }
 
-    /**
-     * Отдельная задача
-     */
+    /** Отдельная задача 1 */
     protected class SolverTask extends PuzzleNode<P, M> implements Runnable {
         SolverTask(P pos, M move, PuzzleNode<P, M> prev) {
             super(pos, move, prev);
@@ -58,9 +56,9 @@ public class ConcurrentPuzzleSolver <P, M> {
                 solution.setValue(this);
             } else {
                 for (M m : puzzle.legalMoves(pos)) {
-                    exec.execute(newTask4Puzzle(puzzle.move(pos, m), m, this));
+                    executor.execute(newTask4Puzzle(puzzle.move(pos, m), m, this));
                 }
             }
         }
-    }
+    } // SolverTask
 }

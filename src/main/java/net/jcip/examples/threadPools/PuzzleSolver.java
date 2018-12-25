@@ -18,9 +18,7 @@ public class PuzzleSolver <P,M> extends ConcurrentPuzzleSolver<P, M> {
         return new CountingSolverTask(pos, move, node);
     }
 
-    /**
-     * Отдельная задача 2
-     */
+    /** Отдельная задача 2 */
     class CountingSolverTask extends SolverTask {
 
         CountingSolverTask(P pos, M move, PuzzleNode<P, M> prev) {

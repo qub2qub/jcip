@@ -18,7 +18,9 @@ public class My2ThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable runnable) {
-        return new My2AppThread(runnable, poolName, this);
+        My2AppThread my2AppThread = new My2AppThread(runnable, poolName, this);
+        System.out.println("my2AppThread = " + my2AppThread);
+        return my2AppThread;
     }
 
     public int incrementCreated() {

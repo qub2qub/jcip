@@ -4,7 +4,10 @@ import java.util.concurrent.atomic.*;
 import java.util.logging.*;
 
 /**
- * Custom thread base class
+ * The interesting customization takes place in MyAppThread, which lets you provide a thread name,
+ * sets a custom UncaughtExceptionHandler that writes a message to a Logger,
+ * maintains statistics on how many threads have been created and destroyed,
+ * and optionally writes a debug message to the log when a thread is created or terminates.
  */
 public class MyAppThread extends Thread {
     public static final String DEFAULT_NAME = "MyAppThread";
@@ -20,11 +23,13 @@ public class MyAppThread extends Thread {
     public MyAppThread(Runnable runnable, String name) {
         super(runnable, name + "-" + created.incrementAndGet());
 
-        /* Это если исключение будет в самом потоке шкедьюлера,
-         а не в том, в котором будет выполняться задача.
-          Исключения в задаче попадут в ExecutionExceptions у соответствующей Future.*/
+        //А для ScheduledThreadPoolExecutor -- Исключения в задаче попадут в ExecutionExceptions у соответствующей Future.
+        //А сюда видимо придут только исключения, которые будут в самом потоке шкедьюлера,
+        // а не в том runnable, в котором будет выполняться задача.
         setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread t, Throwable e) {
+                // Сработает только для .execute(..) у следующих executor-ов:
+                // newFixedThreadPool, newSingleThreadExecutor, newCachedThreadPool
                 log.log(Level.SEVERE, "UNCAUGHT in thread " + t.getName(), e);
             }
         });

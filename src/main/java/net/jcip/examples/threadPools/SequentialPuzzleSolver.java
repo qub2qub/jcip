@@ -4,7 +4,7 @@ import java.util.*;
 
 public class SequentialPuzzleSolver <P, M> {
     private final Puzzle<P, M> puzzle;
-    private final Set<P> seen = new HashSet<P>();
+    private final Set<P> seen = new HashSet<>();
 
     public SequentialPuzzleSolver(Puzzle<P, M> puzzle) {
         this.puzzle = puzzle;
@@ -12,7 +12,7 @@ public class SequentialPuzzleSolver <P, M> {
 
     public List<M> solve() {
         P pos = puzzle.initialPosition();
-        return search(new PuzzleNode<P, M>(pos, null, null));
+        return search(new PuzzleNode<>(pos, null, null));
     }
 
     private List<M> search(PuzzleNode<P, M> node) {
@@ -23,10 +23,11 @@ public class SequentialPuzzleSolver <P, M> {
             }
             for (M move : puzzle.legalMoves(node.pos)) {
                 P pos = puzzle.move(node.pos, move);
-                PuzzleNode<P, M> child = new PuzzleNode<P, M>(pos, move, node);
+                PuzzleNode<P, M> child = new PuzzleNode<>(pos, move, node);
                 List<M> result = search(child);
-                if (result != null)
+                if (result != null) {
                     return result;
+                }
             }
         }
         return null;

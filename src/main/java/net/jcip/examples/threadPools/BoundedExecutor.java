@@ -9,29 +9,34 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class BoundedExecutor {
-    private final Executor exec;
+    private final Executor executor;
     private final Semaphore semaphore;
 
-    public BoundedExecutor(Executor exec, int bound) {
-        this.exec = exec;
+    public BoundedExecutor(Executor executor, int bound) {
+        this.executor = executor;
+        //set the bound on the semaphore to be equal to the pool size plus the number of queued tasks you want to allow
         this.semaphore = new Semaphore(bound);
     }
 
-    public void submitTask(final Runnable command)
-            throws InterruptedException {
+    public void submitTask(final Runnable command) throws InterruptedException {
         semaphore.acquire();
         try {
-            exec.execute(new Runnable() {
-                public void run() {
-                    try {
-                        command.run();
-                    } finally {
-                        semaphore.release();
-                    }
+            executor.execute(() -> {
+                try {
+                    command.run();
+                } finally {
+                    semaphore.release();
                 }
             });
         } catch (RejectedExecutionException e) {
             semaphore.release();
         }
+    }
+
+    private void callersRunPolicy() {
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                1, 2, 0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(10));
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
     }
 }

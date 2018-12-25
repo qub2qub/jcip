@@ -11,45 +11,35 @@ public abstract class BackgroundTask <V> implements Runnable, Future<V> {
 
     private class Computation extends FutureTask<V> {
         public Computation() {
-            super(
-                    // создаётся новый колабл у которого в коле
-                    // выполняется метод компьют() из родителя.
-                    new Callable<V>() {
-                public V call() throws Exception {
-                    return BackgroundTask.this.compute();
-                }
-            });
+            // создаётся новый колабл у которого в CALL(..) выполняется метод компьют() из родителя.
+            super(BackgroundTask.this::compute);
         }
 
+        @Override
         protected final void done() {
             // по завершении, добавляет ивэнт в ивэнт-срэд
-            GuiExecutor.instance().execute(new Runnable() {
-                public void run() {
-                    V value = null;
-                    Throwable thrown = null;
-                    boolean cancelled = false;
-                    try {
-                        value = get();
-                    } catch (ExecutionException e) {
-                        thrown = e.getCause();
-                    } catch (CancellationException e) {
-                        cancelled = true;
-                    } catch (InterruptedException consumed) {
-                    } finally {
-                        onCompletion(value, thrown, cancelled);
-                    }
-                };
+            GuiExecutor.instance().execute(() -> {
+                V value = null;
+                Throwable thrown = null;
+                boolean cancelled = false;
+                try {
+                    value = get();
+                } catch (ExecutionException e) {
+                    thrown = e.getCause();
+                } catch (CancellationException e) {
+                    cancelled = true;
+                } catch (InterruptedException consumed) {
+                    // IGNORE
+                } finally {
+                    onCompletion(value, thrown, cancelled);
+                }
             });
         }
     }
 
     // Called in the background thread (например в методе compute() )
     protected void setProgress(final int current, final int max) {
-        GuiExecutor.instance().execute(new Runnable() {
-            public void run() {
-                onProgress(current, max);
-            }
-        });
+        GuiExecutor.instance().execute(() -> onProgress(current, max));
     }
 
     // Called in the background thread (из FutureTask call() )
