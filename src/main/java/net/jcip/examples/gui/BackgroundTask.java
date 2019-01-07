@@ -31,13 +31,16 @@ public abstract class BackgroundTask <V> implements Runnable, Future<V> {
                 } catch (InterruptedException consumed) {
                     // IGNORE
                 } finally {
-                    onCompletion(value, thrown, cancelled);
+                    BackgroundTask.this.onCompletion(value, thrown, cancelled);
                 }
             });
         }
     }
 
-    // Called in the background thread (например в методе compute() )
+    /**
+     *  Called in the background thread (например в методе compute() )
+     *  Но выполняется в Main thread
+     */
     protected void setProgress(final int current, final int max) {
         GuiExecutor.instance().execute(() -> onProgress(current, max));
     }

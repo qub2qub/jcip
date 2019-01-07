@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 import javax.swing.*;
 
 public class ListenerExamples {
-    private static ExecutorService exec = Executors.newCachedThreadPool();
+    private static ExecutorService backgroundExecutor = Executors.newCachedThreadPool();
 
     private final JButton colorButton = new JButton("Change color");
     private final Random random = new Random();
@@ -22,12 +22,12 @@ public class ListenerExamples {
     private void longRunningTask() {
         computeButton.addActionListener(e -> {
             // выполняет в кэше и результат потом никак не обрабатывается
-            exec.execute(() -> { /* Do some big computation */ });
+            backgroundExecutor.execute(() -> { /* Do some big computation */ });
         });
     }
 
     //*************************************** part 1 *********************************************
-
+    // ***************** Long-running task with user feedback. **************************
     private final JButton button = new JButton("Do");
     private final JLabel label = new JLabel("idle");
 
@@ -41,25 +41,24 @@ public class ListenerExamples {
             // 2) starts the second subtask in a background thread.
             // результат потом в конце запускает подзадачу№3 для обновлению UI
             // для этого использует утилиту чтобы передать ивэнт в event thread.
-            exec.execute(new Runnable() {
-                public void run() {
-                    try {
-                        /* Do big computation */
-                    } finally {
-                        // 3)  Upon completion, the second subtask queues the third subtask
-                        // to run again in the event thread, which updates the user interface
-                        // to reflect that the operation has completed.
-                        GuiExecutor.instance().execute(() -> {
-                            button.setEnabled(true);
-                            label.setText("idle");
-                        });
-                    }
+            backgroundExecutor.execute(() -> {
+                try {
+                    /* Do big computation */
+                } finally {
+                    // 3)  Upon completion, the second subtask queues the third subtask
+                    // to run again in the event thread, which updates the user interface
+                    // to reflect that the operation has completed.
+                    GuiExecutor.instance().execute(() -> {
+                        button.setEnabled(true);
+                        label.setText("idle");
+                    });
                 }
             });
         });
     }
 
     //*************************************** part 2 *********************************************
+    // ***************************** Cancelling a long-running task. ***********************
 
     private final JButton startButton = new JButton("Start");
     private final JButton cancelButton = new JButton("Cancel");
@@ -70,7 +69,7 @@ public class ListenerExamples {
         startButton.addActionListener(e -> {
             if (runningTask == null) {
                 // в каком потоке будет выполняться задача?
-                runningTask = exec.submit(new Runnable() {
+                runningTask = backgroundExecutor.submit(new Runnable() {
                     private boolean moreWork() { return false; }
                     private void cleanUpPartialWork() { }
                     private void doSomeWork() { }
@@ -88,7 +87,7 @@ public class ListenerExamples {
                 }); // submit
             }; // if
         });
-
+        // все слушатели выполняются в одном мэин потоке
         cancelButton.addActionListener(event -> {
             if (runningTask != null)
                 runningTask.cancel(true);
@@ -96,9 +95,10 @@ public class ListenerExamples {
     }
 
     //*************************************** part 3 *********************************************
-
-    private void runInBackground(final Runnable task) {
+    // **************** Background task class supporting cancellation, completion notification, and progress notification. ****************
+    private void runInBackground() {
         startButton.addActionListener(e -> {
+            // сам класс
             class CancelListener implements ActionListener {
                 private BackgroundTask<?> backgroundTask; // он явл-ся и future и runnable одновременно
                 public void actionPerformed(ActionEvent event) {
@@ -123,14 +123,11 @@ public class ListenerExamples {
                     return false;
                 }
                 private void doSomeWork() {
-                    // какие-то вычисления
-                    // например обновляем прогресс после начала
+                    // какие-то вычисления, например обновляем прогресс после начала
                     setProgress(25, 100);
-                    // .. другие вычисления
-                    // .. и снова обновляем прогресс
+                    // .. другие вычисления, .. и снова обновляем прогресс
                     setProgress(75, 100);
-                    // и т.п., делаем оставшиеся вычисления
-                    // .. и снова обновляем прогресс
+                    // и т.п., делаем оставшиеся вычисления, ..и снова обновляем прогресс
                     setProgress(100, 100);
                 }
                 @Override
@@ -141,7 +138,7 @@ public class ListenerExamples {
 
             }; // end of new BackgroundTask<Void>()
             cancelButton.addActionListener(cancelListener);
-            exec.execute(task);
+            backgroundExecutor.execute(cancelListener.backgroundTask);
         }); //addActionListener
     }
 }
