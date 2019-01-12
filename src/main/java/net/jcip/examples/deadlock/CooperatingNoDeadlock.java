@@ -60,13 +60,12 @@ class CooperatingNoDeadlock {
             Set<Taxi> copy;
             // чтобы избежать concurrentModifExc самого сета.
             synchronized (this) {
-                copy = new HashSet<Taxi>(taxis);
+                copy = new HashSet<>(taxis);
             }
             Image image = new Image();
-            // сначала сделали копию всех такси, чтобы получить срез
-            // чтобы не надо было вызывать getLocation из синхрониз.блока
-            // но они же сделали только копию ссылки на сет,
-            // поля в каждом такси также могут буть изменены из других потоков.
+            // сначала сделали копию всех такси, чтобы получить срез и теперь не надо вызывать getLocation из синхрониз.блока
+            // но они же сделали только копию ссылки на сет (поля в каждом такси также могут буть изменены из других потоков)
+            // Но главное что сейчас они тут не держат лок при вызове alien method-а
             for (Taxi t : copy) {
                 image.drawMarker(t.getLocation());
             }
@@ -75,8 +74,7 @@ class CooperatingNoDeadlock {
     }
 
     class Image {
-        public void drawMarker(ImmutablePoint p) {
-        }
+        public void drawMarker(ImmutablePoint p) { }
     }
 
 }

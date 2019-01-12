@@ -23,9 +23,7 @@ public class LeftRightDeadlock {
         }
     }
 
-    void doSomething() {
-    }
+    private void doSomething() { }
 
-    void doSomethingElse() {
-    }
+    private void doSomethingElse() { }
 }

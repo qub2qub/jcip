@@ -67,7 +67,6 @@ public class CooperatingDeadlock {
     }
 
     class Image {
-        public void drawMarker(ImmutablePoint p) {
-        }
+        public void drawMarker(ImmutablePoint p) { }
     }
 }
