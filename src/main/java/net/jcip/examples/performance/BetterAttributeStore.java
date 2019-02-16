@@ -1,6 +1,7 @@
 package net.jcip.examples.performance;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.*;
 
 import net.jcip.annotations.*;
@@ -10,8 +11,10 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class BetterAttributeStore {
-    @GuardedBy("this") private final Map<String, String>
-            attributes = new HashMap<String, String>();
+    @GuardedBy("this")
+    private final Map<String, String> attributes = new HashMap<>();
+    // лучше конечно просто заменить многопоточной коллекцией и убрать synchronized
+//    private final Map<String, String> attributes = new ConcurrentHashMap<>();
 
     public boolean userLocationMatches(String name, String regexp) {
         String key = "users." + name + ".location";
@@ -19,9 +22,6 @@ public class BetterAttributeStore {
         synchronized (this) {
             location = attributes.get(key);
         }
-        if (location == null)
-            return false;
-        else
-            return Pattern.matches(regexp, location);
+        return location != null && Pattern.matches(regexp, location);
     }
 }

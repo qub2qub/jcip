@@ -9,12 +9,14 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class ServerStatusBeforeSplit {
-    @GuardedBy("this") public final Set<String> users;
-    @GuardedBy("this") public final Set<String> queries;
+    @GuardedBy("this")
+    private final Set<String> users;
+    @GuardedBy("this")
+    private final Set<String> queries;
 
     public ServerStatusBeforeSplit() {
-        users = new HashSet<String>();
-        queries = new HashSet<String>();
+        users = new HashSet<>();
+        queries = new HashSet<>();
     }
 
     public synchronized void addUser(String u) {

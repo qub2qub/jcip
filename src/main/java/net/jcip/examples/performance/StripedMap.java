@@ -1,6 +1,6 @@
 package net.jcip.examples.performance;
 
-import net.jcip.annotations.*;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * Hash-based map using lock striping
@@ -21,8 +21,9 @@ public class StripedMap {
     public StripedMap(int numBuckets) {
         buckets = new Node[numBuckets];
         locks = new Object[N_LOCKS];
-        for (int i = 0; i < N_LOCKS; i++)
+        for (int i = 0; i < N_LOCKS; i++) {
             locks[i] = new Object();
+        }
     }
 
     private final int hash(Object key) {

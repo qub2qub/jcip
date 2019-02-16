@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 public class PutTakeTest extends TestCase {
     protected static final ExecutorService pool = Executors.newCachedThreadPool();
     protected CyclicBarrier barrier;
-    protected final SemaphoreBoundedBuffer<Integer> bb;
+    protected final BoundedBufferSemaphore<Integer> bb;
     protected final int nTrials, nPairs;
     protected final AtomicInteger putSum = new AtomicInteger(0);
     protected final AtomicInteger takeSum = new AtomicInteger(0);
@@ -22,7 +22,7 @@ public class PutTakeTest extends TestCase {
     }
 
     public PutTakeTest(int capacity, int npairs, int ntrials) {
-        this.bb = new SemaphoreBoundedBuffer<Integer>(capacity);
+        this.bb = new BoundedBufferSemaphore<>(capacity);
         this.nTrials = ntrials;
         this.nPairs = npairs;
         this.barrier = new CyclicBarrier(npairs * 2 + 1);
@@ -31,8 +31,37 @@ public class PutTakeTest extends TestCase {
     void test() {
         try {
             for (int i = 0; i < nPairs; i++) {
-                pool.execute(new Producer());
-                pool.execute(new Consumer());
+//                pool.execute(new Producer());
+//                pool.execute(new Consumer());
+                pool.submit(new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        int seed = (this.hashCode() ^ (int) System.nanoTime());
+                        int sum = 0;
+                        barrier.await();
+                        for (int i = nTrials; i > 0; --i) {
+                            bb.put(seed);
+                            sum += seed;
+                            seed = xorShift(seed);
+                        }
+                        putSum.getAndAdd(sum);
+                        barrier.await();
+                        return null;
+                    }
+                });
+                pool.submit(new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        barrier.await();
+                        int sum = 0;
+                        for (int i = nTrials; i > 0; --i) {
+                            sum += bb.take();
+                        }
+                        takeSum.getAndAdd(sum);
+                        barrier.await();
+                        return null;
+                    }
+                });
             }
             System.out.println("Все ждут");
             // все потоки проинициализированы и ждут послденего .await()
@@ -41,7 +70,7 @@ public class PutTakeTest extends TestCase {
             System.out.println("Все завершаются..");
             // после того как барьер пройден -- они снова вызывают .await() в конце своих операций
             // и барьеру нужен ещё 1 .await(), чтобы всех выпустить в конце
-            barrier.await(); // wait for all threads to finish
+            barrier.await(5, TimeUnit.SECONDS); // wait for all threads to finish
             System.out.println("Все закончились");
             assertEquals(putSum.get(), takeSum.get());
         } catch (Exception e) {

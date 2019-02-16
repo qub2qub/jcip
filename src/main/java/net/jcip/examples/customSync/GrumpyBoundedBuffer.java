@@ -6,7 +6,7 @@ import net.jcip.annotations.*;
  * Bounded buffer that balks when preconditions are not met
  */
 @ThreadSafe
-        public class GrumpyBoundedBuffer <V> extends BaseBoundedBuffer<V> {
+public class GrumpyBoundedBuffer <V> extends BaseBoundedBuffer<V> {
     public GrumpyBoundedBuffer() {
         this(100);
     }
@@ -35,10 +35,7 @@ class ExampleUsage {
     int SLEEP_GRANULARITY = 50;
 
     void useBuffer() throws InterruptedException {
-        /*
-        надо обрабатывать Exception
-
-         */
+        // надо обрабатывать Exception
         while (true) {
             try {
                 String item = buffer.take();

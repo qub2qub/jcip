@@ -8,14 +8,17 @@ import net.jcip.annotations.*;
  * Bounded buffer using Semaphore
  */
 @ThreadSafe
-public class SemaphoreBoundedBuffer <E> {
+public class BoundedBufferSemaphore<E> {
     private final Semaphore availableItems, availableSpaces;
-    @GuardedBy("this") private final E[] items;
-    @GuardedBy("this") private int putPosition = 0, takePosition = 0;
+    @GuardedBy("this")
+    private final E[] items;
+    @GuardedBy("this")
+    private int putPosition = 0, takePosition = 0;
 
-    public SemaphoreBoundedBuffer(int capacity) {
-        if (capacity <= 0)
+    public BoundedBufferSemaphore(int capacity) {
+        if (capacity <= 0) {
             throw new IllegalArgumentException();
+        }
         availableItems = new Semaphore(0);
         availableSpaces = new Semaphore(capacity);
         items = (E[]) new Object[capacity];

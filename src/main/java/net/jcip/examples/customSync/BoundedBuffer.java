@@ -18,7 +18,6 @@ public class BoundedBuffer <V> extends BaseBoundedBuffer<V> {
         super(size);
     }
 
-
     /*
     Короче, основной смысл такой:
     1) condition queue=wait set=очередь-список потоков, хранящийся у какого-то объекта

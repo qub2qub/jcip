@@ -6,7 +6,8 @@ import net.jcip.annotations.*;
 import net.jcip.examples.vehicleTracker.ImmutablePoint;
 
 /**
- * Using open calls to avoiding deadlock between cooperating objects
+ * Using open calls to avoiding deadlock between cooperating objects.
+ * Refactored to use open calls and thus eliminate the deadlock risk.
  */
 class CooperatingNoDeadlock {
     @ThreadSafe
