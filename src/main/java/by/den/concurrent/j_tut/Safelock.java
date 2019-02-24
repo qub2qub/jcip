@@ -40,9 +40,7 @@ public class Safelock {
         public void bow(Friend bower) {
             if (impendingBow(bower)) {
                 try {
-                    System.out.format("%s: %s has"
-                        + " bowed to me!%n", 
-                        this.name, bower.getName());
+                    System.out.format("%s: %s has bowed to me!%n", this.name, bower.getName());
                     bower.bowBack(this);
                 } finally {
                     lock.unlock();

@@ -6,7 +6,7 @@ import java.util.concurrent.*;
  * Testing with a barrier-based timer
  */
 public class TimedPutTakeTest extends PutTakeTest {
-    private BarrierTimer timer = new BarrierTimer();
+    private BarrierTimer timer = new BarrierTimer(); // Runnable
 
     public TimedPutTakeTest(int cap, int pairs, int trials) {
         super(cap, pairs, trials);
