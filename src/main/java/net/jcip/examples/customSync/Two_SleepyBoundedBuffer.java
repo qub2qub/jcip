@@ -1,21 +1,20 @@
 package net.jcip.examples.customSync;
 
 import net.jcip.annotations.*;
-import net.jcip.examples.customSync.BaseBoundedBuffer;
 
 /**
  * Bounded buffer using crude blocking
  */
 @ThreadSafe
-public class SleepyBoundedBuffer <V> extends BaseBoundedBuffer<V> {
+public class Two_SleepyBoundedBuffer<V> extends BaseBoundedBuffer<V> {
 
     int SLEEP_GRANULARITY = 60;
 
-    public SleepyBoundedBuffer() {
+    public Two_SleepyBoundedBuffer() {
         this(100);
     }
 
-    public SleepyBoundedBuffer(int size) {
+    public Two_SleepyBoundedBuffer(int size) {
         super(size);
     }
 

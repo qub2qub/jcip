@@ -3,15 +3,16 @@ package net.jcip.examples.customSync;
 import net.jcip.annotations.*;
 
 /**
- * Bounded buffer that balks when preconditions are not met
+ * Bounded buffer that balks when preconditions are not met.
+ * Propagating precondition failure to callers.
  */
 @ThreadSafe
-public class GrumpyBoundedBuffer <V> extends BaseBoundedBuffer<V> {
-    public GrumpyBoundedBuffer() {
+public class One_GrumpyBoundedBuffer<V> extends BaseBoundedBuffer<V> {
+    public One_GrumpyBoundedBuffer() {
         this(100);
     }
 
-    public GrumpyBoundedBuffer(int size) {
+    public One_GrumpyBoundedBuffer(int size) {
         super(size);
     }
 
@@ -31,7 +32,7 @@ public class GrumpyBoundedBuffer <V> extends BaseBoundedBuffer<V> {
 }
 
 class ExampleUsage {
-    private GrumpyBoundedBuffer<String> buffer;
+    private One_GrumpyBoundedBuffer<String> buffer;
     int SLEEP_GRANULARITY = 50;
 
     void useBuffer() throws InterruptedException {

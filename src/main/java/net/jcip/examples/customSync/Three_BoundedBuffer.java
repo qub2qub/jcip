@@ -1,20 +1,19 @@
 package net.jcip.examples.customSync;
 
 import net.jcip.annotations.*;
-import net.jcip.examples.customSync.BaseBoundedBuffer;
 
 /**
  * Bounded buffer using condition queues
  */
 @ThreadSafe
-public class BoundedBuffer <V> extends BaseBoundedBuffer<V> {
+public class Three_BoundedBuffer<V> extends BaseBoundedBuffer<V> {
     // CONDITION PREDICATE: not-full (!isFull())
     // CONDITION PREDICATE: not-empty (!isEmpty())
-    public BoundedBuffer() {
+    public Three_BoundedBuffer() {
         this(100);
     }
 
-    public BoundedBuffer(int size) {
+    public Three_BoundedBuffer(int size) {
         super(size);
     }
 
@@ -37,7 +36,9 @@ public class BoundedBuffer <V> extends BaseBoundedBuffer<V> {
     // или если FULL -- то блокируется
     public synchronized void put(V v) throws InterruptedException {
         while (isFull()) {
-            wait();
+            wait(); // тут заснул - отпустил лок
+            // wait() reacquires the lock before returning.
+            // тут проснулся - снова взял лок
         }
         doPut(v);
         notifyAll();
@@ -49,7 +50,9 @@ public class BoundedBuffer <V> extends BaseBoundedBuffer<V> {
     public synchronized V take() throws InterruptedException {
         // tests the condition predicate (that the buffer is nonempty).
         while (isEmpty()) {
-            this.wait();
+            this.wait(); // тут заснул - отпустил лок
+            // wait() reacquires the lock before returning.
+            // тут проснулся - снова взял лок
         }
         // If the buffer is indeed nonempty, it removes the first element,
         // which it can do because it still holds the lock guarding the buffer state.

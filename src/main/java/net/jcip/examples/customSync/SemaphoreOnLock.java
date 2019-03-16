@@ -10,12 +10,10 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class SemaphoreOnLock {
+    @GuardedBy("lock") private int permits;
     private final Lock lock = new ReentrantLock();
-
     // CONDITION PREDICATE: permitsAvailable (permits > 0)
     private final Condition permitsAvailable = lock.newCondition();
-
-    @GuardedBy("lock") private int permits;
 
     SemaphoreOnLock(int initialPermits) {
         lock.lock();
@@ -28,10 +26,10 @@ public class SemaphoreOnLock {
 
     // BLOCKS-UNTIL: permitsAvailable
     public void acquire() throws InterruptedException {
-        lock.lock(); // 1е место
+        lock.lock(); // 1е место = one point where they might block
         try {
             while (permits <= 0) {
-                permitsAvailable.await(); // 2е место
+                permitsAvailable.await(); // 2е место = 2nd point where they might block
             }
             --permits;
         } finally {

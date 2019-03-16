@@ -9,7 +9,7 @@ import net.jcip.annotations.*;
  */
 
 @ThreadSafe
-public class ConditionBoundedBuffer <T> {
+public class Four_ConditionBoundedBuffer<T> {
 
     protected final Lock lock = new ReentrantLock();
 
@@ -28,8 +28,7 @@ public class ConditionBoundedBuffer <T> {
         lock.lock();
         try {
             while (count == items.length) {
-                // блокируется если очередь полная и
-                // ждёт сигнала от notFull
+                // блокируется если очередь полная и ждёт сигнала от notFull
                 notFull.await();
                 // т.е. есть отдельный wait set, в котором потоки ждут сигнала, что очередь не полная
             }
@@ -50,8 +49,7 @@ public class ConditionBoundedBuffer <T> {
         lock.lock();
         try {
             while (count == 0) {
-                // блокируется если очередь пустая и
-                // ждёт сигнала от notEmpty
+                // блокируется если очередь пустая и ждёт сигнала от notEmpty
                 notEmpty.await();
                 // т.е. есть отдельный wait set, в котором потоки ждут сигнала, что очередь не пустая
             }
