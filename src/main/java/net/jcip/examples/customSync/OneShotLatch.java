@@ -25,13 +25,14 @@ public class OneShotLatch {
 
     public void printSyncState() {
         System.out.println("................................." +
-                "state="+sync.getSyncState() + ", Q="+sync.getQueueLength());
+                "state=" + sync.getSyncState() + ", Q=" + sync.getQueueLength());
     }
 
     public void awaitExclusively() throws InterruptedException {
         // вызывает tryAcquireShared(), и в него же передаётся аргумент
         sync.acquireInterruptibly(0);
     }
+
     public void releaseExclusively() {
         System.out.println("__  sync.release __");
         // вызывает tryReleaseShared(), и в него же передаётся аргумент
@@ -42,7 +43,7 @@ public class OneShotLatch {
      * private невидимый класс
      */
     private class Sync extends AbstractQueuedSynchronizer {
-        /**
+        /*
          * a negative value -- indicates acquisition failure;<p>
          * zero indicates the synchronizer was acquired exclusively;<p>
          * a positive value indicates the synchronizer was acquired nonexclusively.<p>
@@ -57,7 +58,6 @@ public class OneShotLatch {
         protected boolean tryReleaseShared(int ignored) {
             setState(1); // Latch is now open
             return true; // Other threads may now be able to acquire
-
         }
 
         @Override
@@ -84,7 +84,7 @@ public class OneShotLatch {
         final Random random = new Random();
         for (int i = 0; i < 10; i++) {
             //----------------------------------------
-            Thread thread = new Thread("Thread#"+i) {
+            Thread thread = new Thread("Thread#" + i) {
                 @Override
                 public void run() {
                     try {
@@ -92,8 +92,8 @@ public class OneShotLatch {
 //                        latch.await();
                         latch.awaitExclusively();
                         long rnd = random.nextInt(3000);
-                        System.out.println(getName() + " working....."+rnd);
-                        Thread.sleep(500+rnd);
+                        System.out.println(getName() + " working....." + rnd);
+                        Thread.sleep(500 + rnd);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
