@@ -9,7 +9,7 @@ import net.jcip.annotations.*;
  */
 @ThreadSafe
 public class AtomicPseudoRandom extends PseudoRandom {
-    private AtomicInteger seed;
+    private AtomicInteger seed; // shared seed state
 
     AtomicPseudoRandom(int seed) {
         this.seed = new AtomicInteger(seed);

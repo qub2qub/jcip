@@ -10,7 +10,7 @@ import net.jcip.annotations.*;
 @ThreadSafe
 public class ConcurrentStack <E> {
 
-    AtomicReference<Node<E>> top = new AtomicReference<Node<E>>();
+    AtomicReference<Node<E>> top = new AtomicReference<>();
 
     public void push(E item) {
         Node<E> newHead = new Node<E>(item);

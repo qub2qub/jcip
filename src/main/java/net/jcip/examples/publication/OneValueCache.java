@@ -14,16 +14,17 @@ public class OneValueCache {
     private final BigInteger[] lastFactors;
 
     public OneValueCache(BigInteger i, BigInteger[] factors) {
-        //<editor-fold desc="Constructor-Description">
         lastNumber = i;
         lastFactors = Arrays.copyOf(factors, factors.length);
-        //</editor-fold>
     }
 
     public BigInteger[] getFactors(BigInteger i) {
-        if (lastNumber == null || !lastNumber.equals(i))
+
+        if (lastNumber == null || !lastNumber.equals(i)) {
             return null;
-        else
+        } else {
             return Arrays.copyOf(lastFactors, lastFactors.length);
+        }
+
     }
 }

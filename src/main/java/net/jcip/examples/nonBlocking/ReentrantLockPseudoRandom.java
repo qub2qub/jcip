@@ -10,7 +10,7 @@ import net.jcip.annotations.*;
 @ThreadSafe
 public class ReentrantLockPseudoRandom extends PseudoRandom {
     private final Lock lock = new ReentrantLock(false);
-    private int seed;
+    private int seed; // shared seed state
 
     ReentrantLockPseudoRandom(int seed) {
         this.seed = seed;
@@ -20,8 +20,8 @@ public class ReentrantLockPseudoRandom extends PseudoRandom {
         lock.lock();
         try {
             int s = seed;
-            // обновление сид --- это шэрэд операция
-            // вычисление нового инта -- это срэд локал операция.
+            // обновление сид --- это shared операция
+            // вычисление нового инта -- это thread-local операция.
             seed = calculateNext(s);
             int remainder = s % n;
             return remainder > 0 ? remainder : remainder + n;

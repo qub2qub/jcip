@@ -5,32 +5,30 @@ import java.util.concurrent.atomic.*;
 import net.jcip.annotations.*;
 
 /**
- * Insertion in the Michael-Scott nonblocking queue algorithm
+ * Insertion in the Michael & Scott nonblocking queue algorithm, which is used by ConcurrentLinkedQueue
  */
 @ThreadSafe
 public class LinkedQueue <E> {
 
-    private static class Node <E> {
+    private static class LinkedQueueNode<E> {
         final E item;
-        final AtomicReference<LinkedQueue.Node<E>> next;
+        final AtomicReference<LinkedQueueNode<E>> next;
 
-        public Node(E item, LinkedQueue.Node<E> next) {
+        public LinkedQueueNode(E item, LinkedQueueNode<E> next) {
             this.item = item;
-            this.next = new AtomicReference<LinkedQueue.Node<E>>(next);
+            this.next = new AtomicReference<>(next);
         }
     }
 
-    private final LinkedQueue.Node<E> dummy = new LinkedQueue.Node<E>(null, null);
-    private final AtomicReference<LinkedQueue.Node<E>> head
-            = new AtomicReference<LinkedQueue.Node<E>>(dummy);
-    private final AtomicReference<LinkedQueue.Node<E>> tail
-            = new AtomicReference<LinkedQueue.Node<E>>(dummy);
+    private final LinkedQueueNode<E> dummy = new LinkedQueueNode<>(null, null);
+    private final AtomicReference<LinkedQueueNode<E>> head = new AtomicReference<>(dummy);
+    private final AtomicReference<LinkedQueueNode<E>> tail = new AtomicReference<>(dummy);
 
     public boolean put(E item) {
-        LinkedQueue.Node<E> newNode = new LinkedQueue.Node<E>(item, null);
+        LinkedQueueNode<E> newNode = new LinkedQueueNode<E>(item, null);
         while (true) {
-            LinkedQueue.Node<E> curTail = tail.get();
-            LinkedQueue.Node<E> tailNext = curTail.next.get();
+            LinkedQueueNode<E> curTail = tail.get();
+            LinkedQueueNode<E> tailNext = curTail.next.get();
             /*
             A) LinkedQueue.put() first checks to see if the queue is in the
             intermediate state before attempting to insert a new element (step A).
@@ -39,7 +37,7 @@ public class LinkedQueue <E> {
             inserting an element (between its steps C and D).
             Rather than wait for that thread to finish, the current thread helps it
             by finishing the operation for it, advancing(продвигая вперёд)
-             the tail pointer (step B).
+            the tail pointer (step B).
 
             C) It then repeats this check in case another thread has started inserting
             a new element, advancing the tail pointer until it finds the queue in the quiescent
@@ -54,15 +52,12 @@ public class LinkedQueue <E> {
                     // [если поток сможет добавить новый нод -- то в этом if будет true --
                     // и, значит, поток уже по-любому выйдет из while(true),
                     // даже если он не успеет передвинуть указатель хвоста.
-                    // это за него сделает другой поток.]
+                    // это за него уже сделал другой поток.]
                     if (curTail.next.compareAndSet(null, newNode)) { // CCCCC
-                        // Insertion succeeded, try advancing tail
+                        // Insertion succeeded, try advancing tail, could fail but still return true
                         tail.compareAndSet(curTail, newNode); // DDDDD
-                        // А в любом ли случае поток дойдёт до выхода из while (true) ?
-                        // всегда??, т.к. раз уж он попал в этот if -- то он и передвинет? НЕ ФАКТ!!
-                        // тогда (если не пердвинет -- то метод tail.compareAndSet(..) вернёт false)
-                        // но это неважно, т.к. текущий поток всё равно здесь выйдет из while (true).
-                        // главное что в этом if он уже добавил свой новый нод
+                        // В любом случае поток выйдет из while (true) даже если не пердвинет хвост на новый нод;
+                        // главное что в этом if он уже добавил ссылку на свой новый нод в curTail.next
                         return true;
                     }
                 } // else -- tailNext != null
